@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pod Management Portal</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+            --space: 1rem;
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: var(--font);
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+            padding: var(--space);
+        }
+        
+        .container { 
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: calc(var(--space) * 2);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        h1 {
+            color: var(--gray-800);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: calc(var(--space) * 2);
+            text-align: center;
+        }
+        
+        .section { 
+            margin: var(--space) 0;
+            padding: var(--space);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            background: var(--gray-50);
+        }
+        
+        .section h3 {
+            color: var(--gray-800);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space);
+        }
+        
+        .form-group {
+            display: flex;
+            gap: var(--space);
+            margin: var(--space) 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        button { 
+            padding: calc(var(--space) / 2) var(--space);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        
+        input, select { 
+            padding: calc(var(--space) / 2);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            background: white;
+            min-width: 150px;
+        }
+        
+        .output { 
+            background: var(--gray-900);
+            color: var(--success);
+            padding: var(--space);
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+        
+        table { 
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space) 0;
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        th, td { 
+            padding: var(--space);
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        th { 
+            background: var(--gray-100);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+        
+        .status-running { color: var(--success); font-weight: 600; }
+        .status-error { color: var(--danger); font-weight: 600; }
+        .status-pending { color: var(--warning); font-weight: 600; }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--space) / 2);
+            margin: calc(var(--space) / 2) 0;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: calc(var(--space) / 2); }
+            .container { padding: var(--space); }
+            .form-group { flex-direction: column; align-items: stretch; }
+            input, select, button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Kubernetes Pod Management Portal</h1>
+        
+        <div class="section">
+            <h3>🌐 Services & Ingress</h3>
+            <div class="form-group">
+                <select id="nsSelect" onchange="updateNamespaceSelect()">
+                    <option value="">Select Namespace</option>
+                </select>
+                <button class="btn-primary" onclick="listServices()">📋 List Services</button>
+                <button class="btn-primary" onclick="listIngress()">🔗 List Ingress</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>⚙️ Pod Actions</h3>
+            <div class="form-group">
+                <input type="text" id="podName" placeholder="Pod Name">
+                <select id="namespace">
+                    <option value="default">default</option>
+                </select>
+                <button class="btn-success" onclick="describePod()">📝 Describe</button>
+                <button class="btn-success" onclick="getPodLogs()">📄 Get Logs</button>
+                <button class="btn-danger" onclick="deletePod()">🗑️ Delete Pod</button>
+                <button class="btn-warning" onclick="cleanupBadPods()">🧹 Cleanup Bad Pods</button>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="dryRun">
+                <label for="dryRun">Dry Run</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🔍 Filter Pods</h3>
+            <select id="statusFilter" onchange="filterPods()">
+                <option value="">All Statuses</option>
+                <option value="Running">Running</option>
+                <option value="Pending">Pending</option>
+                <option value="Failed">Failed</option>
+                <option value="Error">Error</option>
+                <option value="CrashLoopBackOff">CrashLoopBackOff</option>
+            </select>
+            <select id="namespaceFilter" onchange="filterPods()">
+                <option value="">All Namespaces</option>
+            </select>
+        </div>
+
+        <div class="section">
+            <h3>Pod List</h3>
+            <div id="podTable"></div>
+        </div>
+
+        <div class="section">
+            <h3>Services</h3>
+            <div id="serviceTable"></div>
+        </div>
+
+        <div class="section">
+            <h3>Ingress</h3>
+            <div id="ingressTable"></div>
+        </div>
+
+        <div class="section">
+            <h3>Output</h3>
+            <button onclick="clearOutput()">Clear</button>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        async function apiCall(endpoint, data = null) {
+            const options = {
+                method: data ? 'POST' : 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            };
+            if (data) options.body = JSON.stringify(data);
+            
+            const response = await fetch(endpoint, options);
+            return await response.text();
+        }
+
+        function addOutput(text) {
+            const output = document.getElementById('output');
+            output.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${text}</div>`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        async function listPods() {
+            try {
+                const result = await apiCall('/pods');
+                document.getElementById('podTable').innerHTML = result;
+                addOutput('Pod list updated');
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function listNamespaces() {
+            try {
+                const result = await apiCall('/namespaces');
+                addOutput('Namespaces: ' + result);
+                
+                // Populate namespace selectors
+                const select = document.getElementById('nsSelect');
+                const podNsSelect = document.getElementById('namespace');
+                const podFilterSelect = document.getElementById('namespaceFilter');
+                const namespaces = result.split(', ');
+                
+                select.innerHTML = '<option value="">All Namespaces</option>';
+                podNsSelect.innerHTML = '<option value="default">default</option>';
+                podFilterSelect.innerHTML = '<option value="">All Namespaces</option>';
+                
+                namespaces.forEach(ns => {
+                    select.innerHTML += `<option value="${ns}">${ns}</option>`;
+                    podNsSelect.innerHTML += `<option value="${ns}">${ns}</option>`;
+                    podFilterSelect.innerHTML += `<option value="${ns}">${ns}</option>`;
+                });
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function listServices() {
+            try {
+                const namespace = document.getElementById('nsSelect').value;
+                const result = await apiCall('/services', { namespace });
+                document.getElementById('serviceTable').innerHTML = result;
+                addOutput('Services list updated');
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function listIngress() {
+            try {
+                const namespace = document.getElementById('nsSelect').value;
+                const result = await apiCall('/ingress', { namespace });
+                document.getElementById('ingressTable').innerHTML = result;
+                addOutput('Ingress list updated');
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        function updateNamespaceSelect() {
+            // Auto-refresh when namespace changes
+            listServices();
+            listIngress();
+        }
+
+        async function cleanupBadPods() {
+            try {
+                const dryRun = document.getElementById('dryRun').checked;
+                const result = await apiCall('/cleanup', { dryRun });
+                addOutput('Cleanup result: ' + result);
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function describePod() {
+            const pod = document.getElementById('podName').value;
+            const ns = document.getElementById('namespace').value;
+            if (!pod) return addOutput('Pod name required');
+            
+            try {
+                const result = await apiCall('/describe', { pod, namespace: ns });
+                addOutput('Pod description: ' + result);
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function getPodLogs() {
+            const pod = document.getElementById('podName').value;
+            const ns = document.getElementById('namespace').value;
+            if (!pod) return addOutput('Pod name required');
+            
+            try {
+                const result = await apiCall('/logs', { pod, namespace: ns });
+                addOutput('Pod logs: ' + result);
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function deletePod() {
+            const pod = document.getElementById('podName').value;
+            const ns = document.getElementById('namespace').value;
+            if (!pod) return addOutput('Pod name required');
+            if (!confirm(`Delete pod ${pod}?`)) return;
+            
+            try {
+                const result = await apiCall('/delete', { pod, namespace: ns });
+                addOutput('Delete result: ' + result);
+                listPods();
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function cleanupBadPods() {
+            try {
+                const dryRun = document.getElementById('dryRun').checked;
+                const result = await apiCall('/cleanup', { dryRun });
+                addOutput('Cleanup result: ' + result);
+                listPods();
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        function filterPods() {
+            const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+            const namespaceFilter = document.getElementById('namespaceFilter').value.toLowerCase();
+            const table = document.getElementById('podTable');
+            const rows = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < rows.length; i++) {
+                const text = rows[i].textContent.toLowerCase();
+                const showStatus = !statusFilter || text.includes(statusFilter);
+                const showNamespace = !namespaceFilter || text.includes(namespaceFilter);
+                rows[i].style.display = (showStatus && showNamespace) ? '' : 'none';
+            }
+        }
+
+        function clearOutput() {
+            document.getElementById('output').innerHTML = '';
+        }
+
+        async function describeSvc(name, namespace) {
+            try {
+                const result = await apiCall('/describe-svc', { name, namespace });
+                addOutput(`Service ${name} description: ${result}`);
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        async function describeIngress(name, namespace) {
+            try {
+                const result = await apiCall('/describe-ingress', { name, namespace });
+                addOutput(`Ingress ${name} description: ${result}`);
+            } catch (e) {
+                addOutput('Error: ' + e.message);
+            }
+        }
+
+        // Auto-refresh pod list every 30 seconds
+        setInterval(listPods, 30000);
+        
+        // Load initial data
+        listPods();
+        listNamespaces();
+    </script>
+</body>
+</html>

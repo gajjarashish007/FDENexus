@@ -1,0 +1,8 @@
+# Organization defaults for acm-certificate. Concrete instances inherit from acm-certificate/defaults.
+components:
+  terraform:
+    acm-certificate/defaults:
+      metadata:
+        type: abstract
+        component: acm-certificate
+      vars: {}

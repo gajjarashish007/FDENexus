@@ -1,0 +1,8 @@
+# Organization defaults for eks-cluster. Concrete instances inherit from eks-cluster/defaults.
+components:
+  terraform:
+    eks-cluster/defaults:
+      metadata:
+        type: abstract
+        component: eks-cluster
+      vars: {}

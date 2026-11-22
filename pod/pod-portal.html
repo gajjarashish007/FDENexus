@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pod Cleanup Portal</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            color: var(--gray-900);
+            line-height: 1.6;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        h1 {
+            color: var(--gray-800);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            accent-color: var(--primary);
+        }
+        
+        .checkbox-group label {
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+        
+        button { 
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-primary { 
+            background: var(--primary); 
+            color: white; 
+        }
+        
+        .btn-primary:hover:not(:disabled) { 
+            background: var(--primary-dark); 
+        }
+        
+        .btn-secondary { 
+            background: var(--gray-200); 
+            color: var(--gray-700); 
+        }
+        
+        .btn-secondary:hover:not(:disabled) { 
+            background: var(--gray-300); 
+        }
+        
+        .status { 
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .status.success { 
+            background: rgb(34 197 94 / 0.1);
+            color: var(--success);
+            border: 1px solid rgb(34 197 94 / 0.2);
+        }
+        
+        .status.error { 
+            background: rgb(239 68 68 / 0.1);
+            color: var(--danger);
+            border: 1px solid rgb(239 68 68 / 0.2);
+        }
+        
+        .status.info { 
+            background: rgb(6 182 212 / 0.1);
+            color: var(--info);
+            border: 1px solid rgb(6 182 212 / 0.2);
+        }
+        
+        .output { 
+            background: var(--gray-900);
+            color: #10b981;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.875rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-300);
+            line-height: 1.5;
+        }
+        
+        .output::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .output::-webkit-scrollbar-track {
+            background: var(--gray-800);
+        }
+        
+        .output::-webkit-scrollbar-thumb {
+            background: var(--gray-600);
+            border-radius: 4px;
+        }
+        
+        .output pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .container { padding: 1.5rem; }
+            .controls { 
+                flex-direction: column;
+                align-items: stretch;
+            }
+            button { width: 100%; }
+            .output { height: 300px; }
+        }
+        
+        /* Animation for status updates */
+        .status {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Kubernetes Pod Cleanup Portal</h1>
+        
+        <div class="controls">
+            <div class="checkbox-group">
+                <input type="checkbox" id="dryRun" checked>
+                <label for="dryRun">🔍 Dry Run Mode</label>
+            </div>
+            
+            <button class="btn-primary" onclick="runCleanup()" id="cleanupBtn">
+                🚀 Run Pod Cleanup
+            </button>
+            
+            <button class="btn-secondary" onclick="clearOutput()">
+                🗑️ Clear Output
+            </button>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        async function runCleanup() {
+            const dryRun = document.getElementById('dryRun').checked;
+            const statusDiv = document.getElementById('status');
+            const outputDiv = document.getElementById('output');
+            const cleanupBtn = document.getElementById('cleanupBtn');
+            
+            // Show loading state
+            statusDiv.style.display = 'flex';
+            statusDiv.innerHTML = '<span class="spinner"></span> Running cleanup...';
+            statusDiv.className = 'status info';
+            cleanupBtn.disabled = true;
+            cleanupBtn.innerHTML = '<span class="spinner"></span> Running...';
+            
+            try {
+                const response = await fetch('/cleanup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dryRun })
+                });
+                
+                const result = await response.text();
+                outputDiv.innerHTML += `<pre>${result}</pre>`;
+                outputDiv.scrollTop = outputDiv.scrollHeight;
+                
+                statusDiv.innerHTML = '✅ Cleanup completed successfully';
+                statusDiv.className = 'status success';
+            } catch (error) {
+                statusDiv.innerHTML = '❌ Error: ' + error.message;
+                statusDiv.className = 'status error';
+                outputDiv.innerHTML += `<pre style="color: #ef4444;">Error: ${error.message}</pre>`;
+            } finally {
+                cleanupBtn.disabled = false;
+                cleanupBtn.innerHTML = '🚀 Run Pod Cleanup';
+            }
+        }
+        
+        function clearOutput() {
+            const outputDiv = document.getElementById('output');
+            const statusDiv = document.getElementById('status');
+            
+            outputDiv.innerHTML = '';
+            statusDiv.style.display = 'none';
+        }
+        
+        // Add some initial helpful text
+        document.addEventListener('DOMContentLoaded', function() {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `<pre style="color: #06b6d4;">Welcome to Pod Cleanup Portal
+Ready to clean up Kubernetes pods.
+
+💡 Tips:
+- Enable "Dry Run Mode" to preview changes without making them
+- Check the output carefully before running without dry run
+- Use "Clear Output" to reset the console
+
+Click "Run Pod Cleanup" to begin...</pre>`;
+        });
+    </script>
+</body>
+</html>

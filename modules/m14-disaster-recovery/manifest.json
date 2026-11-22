@@ -1,0 +1,85 @@
+{
+  "id": "M14",
+  "name": "Disaster Recovery & Business Continuity",
+  "group": "Operations",
+  "owner": "SRE",
+  "phase": "P2",
+  "icon": "bi-life-preserver",
+  "description": "Backup policy, recovery objectives, failover and DR exercises with evidence.",
+  "capabilities": [
+    {
+      "id": "backup-policies",
+      "name": "Backup policies",
+      "status": "partial",
+      "summary": "Backups on by default: EFS AWS Backup, DynamoDB PITR, S3 versioning.",
+      "provided_by": "M02"
+    },
+    {
+      "id": "backup-validation",
+      "name": "Backup validation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "recovery-objectives",
+      "name": "Recovery objectives",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "rto-and-rpo-management",
+      "name": "RTO and RPO management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "cross-region-recovery",
+      "name": "Cross-region recovery",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "replication",
+      "name": "Replication",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "failover",
+      "name": "Failover",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "failback",
+      "name": "Failback",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "recovery-runbooks",
+      "name": "Recovery runbooks",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "disaster-recovery-exercises",
+      "name": "Disaster recovery exercises",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "evidence-collection",
+      "name": "Evidence collection",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "platform-level-disaster-recovery",
+      "name": "Platform-level disaster recovery",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": true
+}

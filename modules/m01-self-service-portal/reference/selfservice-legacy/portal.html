@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartOps Portal</title>
+    <link rel="stylesheet" href="portal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body class="login-mode">
+    <!-- ═══ Login Gate ═══ -->
+    <div id="loginView" class="login-view page-active">
+        <div class="login-scene">
+            <div class="login-cube">
+                <div class="cube-face front">☁️</div>
+                <div class="cube-face back">🔒</div>
+                <div class="cube-face right">⚡</div>
+                <div class="cube-face left">🚀</div>
+                <div class="cube-face top">📊</div>
+                <div class="cube-face bottom">🌐</div>
+            </div>
+            <form id="loginForm" class="login-card auth-card">
+                <h1>SmartOps Portal</h1>
+                <p class="login-sub">Infrastructure Self-Service Platform</p>
+                <div class="form-group">
+                    <label for="loginUser">Username</label>
+                    <input id="loginUser" type="text" placeholder="Your username" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPass">Password</label>
+                    <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn-login">Sign In</button>
+                <p id="loginError" class="login-error" hidden></p>
+                <p class="auth-switch">Don't have an account? <button type="button" id="showSignupBtn" class="link-btn">Request access</button></p>
+                <details class="login-guide-preview">
+                    <summary>New here? Read how it works</summary>
+                    <ol class="login-guide-steps">
+                        <li><strong>Request access</strong> — create your account (admin must approve)</li>
+                        <li><strong>Sign in</strong> — use your username and password after approval</li>
+                        <li><strong>Use the portal</strong> — deploy apps, view resources, or ask the chat assistant for help</li>
+                    </ol>
+                </details>
+            </form>
+
+            <form id="signupForm" class="login-card auth-card" hidden>
+                <h1>Request Access</h1>
+                <p class="login-sub">Create an account — an admin must approve before you can sign in</p>
+                <div class="form-group">
+                    <label for="signupUser">Username</label>
+                    <input id="signupUser" type="text" placeholder="Choose a username" autocomplete="username" required minlength="3" maxlength="32" pattern="[A-Za-z0-9_]{3,32}">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" type="email" placeholder="you@company.com" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPass">Password</label>
+                    <input id="signupPass" type="password" placeholder="At least 8 characters" autocomplete="new-password" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" type="password" placeholder="Repeat password" autocomplete="new-password" required minlength="8">
+                </div>
+                <button type="submit" class="btn-login">Submit Request</button>
+                <p id="signupError" class="login-error" hidden></p>
+                <p id="signupSuccess" class="signup-success" hidden></p>
+                <p class="auth-switch">Already have an account? <button type="button" id="showLoginBtn" class="link-btn">Sign in</button></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ Main Portal Shell ═══ -->
+    <div id="portalShell" class="portal-shell" hidden>
+        <!-- 3D Sidebar Navigation -->
+        <aside class="sidebar-3d">
+            <div class="sidebar-brand">
+                <div class="brand-cube">☁️</div>
+                <span>SmartOps Portal</span>
+            </div>
+            <nav class="nav-modules" id="navModules">
+                <button class="nav-module active" data-view="sspView" data-title="Provisioner">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-label">Chat</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-module" data-view="dashboardView" data-title="Resource Dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Dashboard</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-module" data-view="servicesView" data-title="Service Catalog">
+                    <span class="nav-icon">🚀</span>
+                    <span class="nav-label">Services</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-module" data-view="logsView" data-title="Audit Log History">
+                    <span class="nav-icon">📜</span>
+                    <span class="nav-label">Log History</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-module" data-view="deploymentsView" data-title="Manage Deployments">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-label">Deployments</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-module admin-only" data-view="adminView" data-title="User Approvals" hidden>
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-label">Users</span>
+                    <span class="nav-glow"></span>
+                    <span id="pendingBadge" class="nav-badge" hidden>0</span>
+                </button>
+                <button class="nav-module" data-view="helpView" data-title="User Guide">
+                    <span class="nav-icon">❓</span>
+                    <span class="nav-label">Guide</span>
+                    <span class="nav-glow"></span>
+                </button>
+            </nav>
+            <div class="sidebar-user">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-info">
+                    <span id="userName">User</span>
+                    <span id="userRole" class="user-role">operator</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout" title="Logout">⏻</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h2 id="viewTitle">Provisioner</h2>
+                <div class="top-bar-actions">
+                    <button id="helpBtn" class="btn-help-top" title="Quick help">❓ Help</button>
+                    <select id="themeSelect" class="theme-select" title="Switch theme">
+                        <option value="dark">🌙 Dark</option>
+                        <option value="light">☀️ Light</option>
+                        <option value="ocean">🌊 Ocean</option>
+                    </select>
+                    <span id="wsStatus" class="ws-badge disconnected">WS Offline</span>
+                    <span id="apiStatus" class="api-badge">API Checking...</span>
+                </div>
+            </header>
+
+            <!-- ═══ SSP View (Primary Deliverable) ═══ -->
+            <div id="sspView" class="view-panel active">
+                <!-- Workflow Stepper -->
+                <div class="workflow-stepper" id="workflowStepper">
+                    <div class="step active" data-step="1"><span class="step-num">1</span><span class="step-label">Select Service</span></div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="2"><span class="step-num">2</span><span class="step-label">Describe Change</span></div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="3"><span class="step-num">3</span><span class="step-label">Review YAML</span></div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="4"><span class="step-num">4</span><span class="step-label">Review Plan</span></div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="5"><span class="step-num">5</span><span class="step-label">Apply</span></div>
+                </div>
+
+                <div class="ssp-toolbar">
+                    <div class="dropdown-group">
+                        <label for="serviceSelect">Service</label>
+                        <select id="serviceSelect" class="ssp-dropdown">
+                            <option value="">Loading services...</option>
+                        </select>
+                    </div>
+                    <div class="dropdown-group">
+                        <label for="accountSelect">Account</label>
+                        <select id="accountSelect" class="ssp-dropdown">
+                            <option value="">Loading accounts...</option>
+                        </select>
+                    </div>
+                    <div class="dropdown-group region-group">
+                        <label for="regionSelect">Region</label>
+                        <select id="regionSelect" class="ssp-dropdown">
+                            <option value="eu-west-1">eu-west-1</option>
+                            <option value="us-east-1">us-east-1</option>
+                            <option value="us-west-2">us-west-2</option>
+                            <option value="ap-southeast-1">ap-southeast-1</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions" id="quickActions">
+                    <span class="quick-label">Quick actions:</span>
+                    <button class="quick-chip" data-msg="Scale to 2 replicas with monitoring enabled">📈 Scale Up</button>
+                    <button class="quick-chip" data-msg="Create new resource with default tags">➕ Create New</button>
+                    <button class="quick-chip" data-msg="Update instance type to t3.medium">⚙️ Update Config</button>
+                    <button class="quick-chip" data-msg="Enable monitoring and cost tags">📊 Add Monitoring</button>
+                    <button class="quick-chip" data-msg="Add backup and encryption settings">🔒 Secure Resource</button>
+                </div>
+
+                <!-- Mobile tab switcher -->
+                <div class="ssp-tabs" id="sspTabs">
+                    <button class="ssp-tab active" data-tab="chat">💬 Chat</button>
+                    <button class="ssp-tab" data-tab="workflow">📋 Workflow</button>
+                </div>
+
+                <div class="ssp-layout">
+                    <!-- Left: Chat -->
+                    <section class="ssp-chat-panel ssp-tab-panel active" data-panel="chat">
+                        <div class="panel-header">
+                            <h3>💬 Infrastructure Chat</h3>
+                            <div class="panel-header-actions">
+                                <button id="helpChatBtn" class="btn-icon-sm" title="How to use chat">❓</button>
+                                <button id="clearChatBtn" class="btn-icon" title="Clear chat">🗑️</button>
+                            </div>
+                        </div>
+                        <div id="chatMessages" class="chat-messages">
+                            <div class="chat-welcome" id="chatWelcome">
+                                <h4>👋 Getting Started</h4>
+                                <p>Follow these simple steps:</p>
+                                <ol>
+                                    <li>Pick a <strong>Service</strong> and <strong>Account</strong> above</li>
+                                    <li>Click a <strong>Quick action</strong> or type your request</li>
+                                    <li>Review the YAML diff and plan on the right</li>
+                                    <li>Approve the PR and click <strong>Apply</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <textarea id="chatInput" placeholder="Describe the change you want (e.g. 'Scale EC2 to 2 replicas')..." rows="2"></textarea>
+                            <button id="sendChatBtn" class="btn-send" title="Send (Ctrl+Enter)">Send →</button>
+                        </div>
+                        <p class="chat-hint">Tip: Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to send · Use quick actions for common tasks</p>
+                    </section>
+
+                    <!-- Right: Plan / Diff / PR / Apply -->
+                    <section class="ssp-workflow-panel ssp-tab-panel" data-panel="workflow">
+                        <!-- YAML Diff Viewer -->
+                        <div id="yamlDiffSection" class="workflow-section" hidden>
+                            <div class="panel-header">
+                                <h3>📄 YAML Diff — Review Before Confirm</h3>
+                                <span id="diffBadge" class="badge badge-info">Pending Review</span>
+                            </div>
+                            <div id="diffSummary" class="diff-summary" hidden>
+                                <span id="diffSummaryTitle" class="diff-summary-title"></span>
+                                <ul id="diffSummaryList" class="diff-summary-list"></ul>
+                            </div>
+                            <div class="yaml-diff-container">
+                                <div class="yaml-pane">
+                                    <div class="yaml-pane-header">
+                                        <div class="yaml-pane-label removed">Before</div>
+                                        <span id="yamlBeforePath" class="yaml-file-path"></span>
+                                        <button id="copyYamlBeforeBtn" class="btn-icon-sm" title="Copy before YAML">📋</button>
+                                    </div>
+                                    <pre><code id="yamlBefore" class="language-yaml"></code></pre>
+                                </div>
+                                <div class="yaml-pane">
+                                    <div class="yaml-pane-header">
+                                        <div class="yaml-pane-label added">After</div>
+                                        <span id="yamlAfterPath" class="yaml-file-path"></span>
+                                        <button id="copyYamlAfterBtn" class="btn-icon-sm" title="Copy after YAML">📋</button>
+                                    </div>
+                                    <pre><code id="yamlAfter" class="language-yaml"></code></pre>
+                                </div>
+                            </div>
+                            <div class="diff-actions">
+                                <button id="confirmDiffBtn" class="btn-confirm">✓ Confirm Diff &amp; Generate Plan</button>
+                                <button id="rejectDiffBtn" class="btn-reject">✗ Reject</button>
+                            </div>
+                        </div>
+
+                        <!-- Plan Output Viewer -->
+                        <div class="workflow-section">
+                            <div class="panel-header">
+                                <h3>📋 Plan Output</h3>
+                                <div class="panel-header-actions">
+                                    <button id="copyPlanBtn" class="btn-icon-sm" title="Copy plan output">📋</button>
+                                    <span id="planStatus" class="badge badge-muted">No plan</span>
+                                </div>
+                            </div>
+                            <div id="planOutput" class="plan-output"></div>
+                        </div>
+
+                        <!-- PR Widget -->
+                        <div id="prWidget" class="pr-widget">
+                            <div class="pr-header">
+                                <span class="pr-icon">🔀</span>
+                                <h4>Pull Request</h4>
+                                <span id="prStatus" class="badge badge-open">open</span>
+                            </div>
+                            <div class="pr-body">
+                                <a id="prLink" href="#" target="_blank" class="pr-link">—</a>
+                                <div class="pr-approvals">
+                                    <span>Approvals:</span>
+                                    <span id="prApprovalCount" class="approval-count">0 / 0</span>
+                                    <div class="approval-bar">
+                                        <div id="prApprovalBar" class="approval-fill" style="width:0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="approvePrBtn" class="btn-approve-pr">Approve PR</button>
+                        </div>
+
+                        <!-- Apply Button -->
+                        <div id="applySection" class="apply-section">
+                            <button id="applyBtn" class="btn-apply" disabled title="Review plan before applying">
+                                ⚡ Apply Changes
+                            </button>
+                            <p id="applyHint" class="apply-hint">Apply is disabled until plan is reviewed</p>
+                        </div>
+
+                        <!-- Apply Output -->
+                        <div id="applyOutputSection" class="workflow-section">
+                            <div class="panel-header">
+                                <h3>⚡ Apply Output</h3>
+                                <div class="panel-header-actions">
+                                    <button id="copyApplyBtn" class="btn-icon-sm" title="Copy apply output">📋</button>
+                                    <span id="applyStatus" class="badge badge-muted">Idle</span>
+                                </div>
+                            </div>
+                            <div id="applyOutput" class="plan-output apply-output"></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="dashboardView" class="view-panel">
+                <iframe src="index.html" class="embedded-frame" title="Resource Dashboard"></iframe>
+            </div>
+
+            <!-- Services View -->
+            <div id="servicesView" class="view-panel">
+                <iframe src="dashboard.html" class="embedded-frame" title="Service Catalog"></iframe>
+            </div>
+
+            <!-- Log History View -->
+            <div id="logsView" class="view-panel">
+                <div class="logs-toolbar">
+                    <input type="search" id="logsSearch" class="logs-search" placeholder="Search logs by user, action, service...">
+                    <select id="logsLevelFilter" class="logs-filter">
+                        <option value="">All levels</option>
+                        <option value="info">Info</option>
+                        <option value="warn">Warning</option>
+                        <option value="error">Error</option>
+                    </select>
+                    <select id="logsActionFilter" class="logs-filter">
+                        <option value="">All actions</option>
+                        <option value="infra">Infrastructure workflow</option>
+                        <option value="auth">Login &amp; users</option>
+                        <option value="deploy">Deployments</option>
+                    </select>
+                    <button id="refreshLogsBtn" class="btn-refresh-logs">↻ Refresh</button>
+                    <button id="exportLogsBtn" class="btn-export-logs">⬇ Export CSV</button>
+                    <span id="logsCount" class="logs-count">0 entries</span>
+                </div>
+                <div class="logs-table-wrap">
+                    <table class="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Service</th>
+                                <th>Account</th>
+                                <th>Details</th>
+                                <th>Level</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTableBody">
+                            <tr><td colspan="7" class="logs-empty">Loading logs...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Manage Deployments View -->
+            <div id="deploymentsView" class="view-panel">
+                <div class="deploy-manage-header">
+                    <div>
+                        <h3 class="deploy-manage-title">Manage Deployments</h3>
+                        <p class="deploy-manage-sub">View, rerun, edit, or destroy your application deployments</p>
+                    </div>
+                    <div class="deploy-manage-actions">
+                        <input type="search" id="deploySearch" class="deploy-search" placeholder="Search by name, ID, service...">
+                        <select id="deployStatusFilter" class="deploy-filter">
+                            <option value="">All Status</option>
+                            <option value="APPLIED">Applied</option>
+                            <option value="ERROR">Error</option>
+                            <option value="PENDING">Pending</option>
+                        </select>
+                        <button id="refreshDeploymentsBtn" class="btn-refresh-deploy">↻ Refresh</button>
+                        <button id="newDeployBtn" class="btn-new-deploy">+ New Deployment</button>
+                    </div>
+                </div>
+                <p id="deploymentsCount" class="deploy-count">0 deployments</p>
+                <div class="deploy-table-wrap">
+                    <table class="deploy-table">
+                        <thead>
+                            <tr>
+                                <th>Resource Name</th>
+                                <th>Service Type</th>
+                                <th>Status</th>
+                                <th>URL</th>
+                                <th>Updated</th>
+                                <th class="deploy-th-actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deploymentsTableBody">
+                            <tr><td colspan="6" class="deploy-loading">Loading deployments...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Deployment Modal -->
+            <div id="editDeployModal" class="edit-deploy-modal">
+                <div class="edit-deploy-backdrop"></div>
+                <div class="edit-deploy-dialog">
+                    <div class="edit-deploy-header">
+                        <h4>✏️ Edit &amp; Rerun Deployment</h4>
+                        <button id="closeEditDeployModal" class="edit-deploy-close">&times;</button>
+                    </div>
+                    <input type="hidden" id="editDeployId">
+                    <div class="edit-deploy-body">
+                        <div class="edit-field">
+                            <label>Resource Name</label>
+                            <input type="text" id="editResourceName" class="edit-input">
+                        </div>
+                        <div class="edit-field">
+                            <label>Container Port</label>
+                            <input type="number" id="editContainerPort" class="edit-input" value="80">
+                        </div>
+                        <div class="edit-field">
+                            <label>Platform</label>
+                            <select id="editPlatform" class="edit-input">
+                                <option value="linux/amd64">linux/amd64</option>
+                                <option value="linux/arm64">linux/arm64</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="edit-deploy-footer">
+                        <button class="btn-edit-cancel" onclick="ManageDeployments.hideEditModal()">Cancel</button>
+                        <button id="saveEditDeployBtn" class="btn-edit-save">Save &amp; Rerun</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help / User Guide View -->
+            <div id="helpView" class="view-panel">
+                <div class="guide-hero">
+                    <div>
+                        <h3 class="guide-hero-title">📖 User Guide</h3>
+                        <p class="guide-hero-sub">Everything you need to use SmartOps Portal — written in plain language, no technical background required.</p>
+                    </div>
+                    <input type="search" id="guideSearch" class="guide-search" placeholder="Search the guide… (e.g. login, deploy, website)">
+                </div>
+
+                <nav class="guide-toc" aria-label="Guide contents">
+                    <a href="#guide-welcome" class="guide-toc-link">Welcome</a>
+                    <a href="#guide-access" class="guide-toc-link">Getting Access</a>
+                    <a href="#guide-aws-deploy" class="guide-toc-link">Deploy to AWS</a>
+                    <a href="#guide-navigation" class="guide-toc-link">Finding Your Way</a>
+                    <a href="#guide-chat" class="guide-toc-link">Chat Assistant</a>
+                    <a href="#guide-dashboard" class="guide-toc-link">Dashboard</a>
+                    <a href="#guide-services" class="guide-toc-link">Deploy Apps</a>
+                    <a href="#guide-deployments" class="guide-toc-link">Manage Deployments</a>
+                    <a href="#guide-logs" class="guide-toc-link">Activity Logs</a>
+                    <a href="#guide-admin" class="guide-toc-link">For Admins</a>
+                    <a href="#guide-glossary" class="guide-toc-link">Simple Glossary</a>
+                    <a href="#guide-faq" class="guide-toc-link">FAQ &amp; Help</a>
+                </nav>
+
+                <p id="guideNoResults" class="guide-no-results" hidden>No sections match your search. Try different words like "password", "website", or "approve".</p>
+
+                <div class="guide-sections">
+
+                    <!-- 1. Welcome -->
+                    <section id="guide-welcome" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">👋</span>
+                            <span class="guide-section-heading">What is SmartOps Portal?</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">SmartOps Portal is a <strong>self-service website</strong> that lets you manage cloud resources and deploy applications <strong>without needing to be a technical expert</strong>.</p>
+                            <div class="guide-tip">
+                                <strong>Think of it like this:</strong> Instead of filing a ticket and waiting for an engineer, you can describe what you need in everyday language — and the portal helps you do it step by step.
+                            </div>
+                            <h4>What you can do here</h4>
+                            <ul class="guide-list">
+                                <li><strong>Ask for changes</strong> — e.g. "add more capacity" or "create a storage bucket" using the Chat assistant</li>
+                                <li><strong>See your resources</strong> — view servers, storage, and other cloud items on the Dashboard</li>
+                                <li><strong>Deploy applications</strong> — upload a website, code folder, or app image via Services</li>
+                                <li><strong>Track deployments</strong> — check status, rerun, or remove apps under Deployments</li>
+                                <li><strong>Review activity</strong> — see who did what in Log History</li>
+                            </ul>
+                            <p class="guide-note">You do <em>not</em> need to know programming, AWS, or command-line tools. Follow the steps in this guide and use the on-screen buttons.</p>
+                        </div>
+                    </section>
+
+                    <!-- 2. Getting Access -->
+                    <section id="guide-access" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">🔐</span>
+                            <span class="guide-section-heading">Getting Access (First-Time Users)</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">You cannot use the portal until an administrator approves your account. This keeps the system secure.</p>
+                            <div class="guide-steps-vertical">
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">1</span>
+                                    <div>
+                                        <strong>Open the portal website</strong>
+                                        <p>Go to the URL your team gave you (usually something like <code>http://localhost:5000</code> in testing).</p>
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">2</span>
+                                    <div>
+                                        <strong>Click "Request access"</strong>
+                                        <p>On the sign-in page, click the link below the Sign In button — not everyone has an account yet.</p>
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">3</span>
+                                    <div>
+                                        <strong>Fill in your details</strong>
+                                        <p>Choose a username (letters, numbers, underscore only), your work email, and a password (at least 8 characters). Type the password twice to confirm.</p>
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">4</span>
+                                    <div>
+                                        <strong>Wait for approval</strong>
+                                        <p>You'll see a success message. An admin must approve you before you can sign in. Contact your team lead if you wait more than 1–2 business days.</p>
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">5</span>
+                                    <div>
+                                        <strong>Sign in</strong>
+                                        <p>Once approved, return to the portal, enter your username and password, and click <strong>Sign In</strong>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="guide-warn">
+                                <strong>Can't sign in?</strong>
+                                <ul class="guide-list compact">
+                                    <li><em>"Pending admin approval"</em> — wait for an admin to approve you</li>
+                                    <li><em>"Request was rejected"</em> — contact your administrator</li>
+                                    <li><em>"Invalid username or password"</em> — check spelling and caps lock</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 2b. How to Deploy to AWS -->
+                    <section id="guide-aws-deploy" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">☁️</span>
+                            <span class="guide-section-heading">How to Deploy to AWS (Step-by-Step)</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">This guide walks you through deploying to Amazon Web Services (AWS) using SmartOps Portal — from first-time setup to going live.</p>
+
+                            <h4>Before you start — prerequisites</h4>
+                            <ul class="guide-list">
+                                <li>An <strong>AWS account</strong> with permission to create resources (EC2, S3, ECS, etc.)</li>
+                                <li><strong>AWS credentials</strong> configured on the server running SmartOps Portal (ask your admin)</li>
+                                <li>A <strong>SmartOps Portal account</strong> approved by an administrator</li>
+                                <li>For app deployments: your files ready (website folder or code ZIP)</li>
+                            </ul>
+
+                            <div class="guide-tip">
+                                <strong>Admin setup (one time):</strong> On the server, run <code>aws configure</code> and enter your Access Key ID, Secret Access Key, and default region (e.g. <code>eu-west-1</code>). Then start the portal with <code>start.bat</code> or <code>python backend-api.py</code>.
+                            </div>
+
+                            <h4>Path A — Deploy infrastructure with Chat (Provisioner)</h4>
+                            <p>Use this when you need servers, networks, storage, or scaling — described in plain language.</p>
+                            <div class="guide-steps-vertical">
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">1</span>
+                                    <div>
+                                        <strong>Sign in</strong> and open <strong>Chat</strong> from the left menu.
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">2</span>
+                                    <div>
+                                        <strong>Select Service &amp; Account</strong> — e.g. VPC, EC2, Production account. Pick the correct AWS region from the region dropdown.
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">3</span>
+                                    <div>
+                                        <strong>Describe your change</strong> — e.g. <em>"create vpc"</em> or <em>"scale EC2 to 2 replicas"</em>. The assistant generates a plan.
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">4</span>
+                                    <div>
+                                        <strong>Review YAML diff</strong> — compare before/after. Click <strong>Confirm</strong> if correct, or <strong>Reject</strong> to cancel.
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">5</span>
+                                    <div>
+                                        <strong>Review Terraform plan</strong> — check what will be created, changed, or destroyed.
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">6</span>
+                                    <div>
+                                        <strong>Approve the Pull Request</strong> — click Approve until status shows <strong>APPROVED</strong> (required before apply).
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">7</span>
+                                    <div>
+                                        <strong>Apply Changes</strong> — click the green Apply button. Wait for "Apply complete!" confirmation.
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">8</span>
+                                    <div>
+                                        <strong>Verify</strong> — check <strong>Log History</strong> for your workflow entries and <strong>Dashboard</strong> for new resources.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Path B — Create AWS resources directly (Dashboard)</h4>
+                            <p>Use this for one-off resources without the chat workflow.</p>
+                            <ol class="guide-list numbered">
+                                <li>Open <strong>Dashboard</strong> from the left menu</li>
+                                <li>Find the resource card (EC2, S3, DynamoDB, Load Balancer, etc.)</li>
+                                <li>Click <strong>Create</strong> or <strong>Launch</strong></li>
+                                <li>Fill in all fields marked with <strong>*</strong> — the form validates names, formats, and required values</li>
+                                <li>Submit and wait for the success message</li>
+                                <li>Refresh the list to see your new resource</li>
+                            </ol>
+
+                            <h4>Path C — Deploy an application (Services)</h4>
+                            <p>Choose the option that matches what you have:</p>
+                            <div class="guide-option-cards">
+                                <div class="guide-option-card">
+                                    <h4>🌐 Static Website → AWS S3 + CloudFront</h4>
+                                    <ol class="guide-list numbered compact">
+                                        <li>Prepare a folder with <code>index.html</code> plus CSS/JS/images</li>
+                                        <li>Open <strong>Services</strong> → <strong>Deploy Website</strong></li>
+                                        <li>Enter app name (lowercase, hyphens) and domain (e.g. <code>app.example.com</code>)</li>
+                                        <li>Select your website folder and submit</li>
+                                        <li>Portal uploads to S3, enables hosting, and optionally CloudFront CDN</li>
+                                    </ol>
+                                </div>
+                                <div class="guide-option-card">
+                                    <h4>📦 Code ZIP → Docker → ECS</h4>
+                                    <ol class="guide-list numbered compact">
+                                        <li>ZIP your project (Python, Node.js, Go, Java, or static HTML)</li>
+                                        <li>Open <strong>Services</strong> → <strong>Upload &amp; Deploy</strong></li>
+                                        <li>Enter app name, container port (default 8080), upload ZIP</li>
+                                        <li>Portal builds Docker image, pushes to ECR, deploys to ECS</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <h4>After deployment — verify &amp; manage</h4>
+                            <ul class="guide-list">
+                                <li><strong>Manage Deployments</strong> — see status, URL, rerun, edit, or destroy</li>
+                                <li><strong>Log History</strong> — filter by "Infrastructure workflow" or "Deployments"</li>
+                                <li><strong>Dashboard</strong> — confirm EC2, S3, ALB, and other AWS resources exist</li>
+                            </ul>
+
+                            <div class="guide-warn">
+                                <strong>Validation tips:</strong> App names must be lowercase with hyphens (3–63 chars). Domains must look like <code>app.example.com</code>. Container ports must be 1–65535. Website uploads need <code>index.html</code>. If a field is wrong, you'll see a clear error message before anything is sent to AWS.
+                            </div>
+
+                            <div class="guide-warn">
+                                <strong>Costs:</strong> AWS charges for running resources. Always confirm with your team before deploying to production accounts.
+                            </div>
+
+                            <button type="button" class="guide-goto-btn" data-goto-view="servicesView">Start a Deployment →</button>
+                        </div>
+                    </section>
+
+                    <!-- 3. Navigation -->
+                    <section id="guide-navigation" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">🧭</span>
+                            <span class="guide-section-heading">Finding Your Way Around</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">After signing in, you'll see a <strong>menu on the left</strong> and your main work area on the right. Click any menu item to switch sections.</p>
+                            <div class="guide-nav-grid">
+                                <div class="guide-nav-item">
+                                    <span class="guide-nav-icon">🤖</span>
+                                    <strong>Chat</strong>
+                                    <p>Talk to the assistant to request infrastructure changes in plain English.</p>
+                                    <button type="button" class="guide-goto-btn" data-goto-view="sspView">Open Chat →</button>
+                                </div>
+                                <div class="guide-nav-item">
+                                    <span class="guide-nav-icon">📊</span>
+                                    <strong>Dashboard</strong>
+                                    <p>View your cloud resources — servers, storage, databases, and more.</p>
+                                    <button type="button" class="guide-goto-btn" data-goto-view="dashboardView">Open Dashboard →</button>
+                                </div>
+                                <div class="guide-nav-item">
+                                    <span class="guide-nav-icon">🚀</span>
+                                    <strong>Services</strong>
+                                    <p>Deploy websites, upload code, or publish your own app image.</p>
+                                    <button type="button" class="guide-goto-btn" data-goto-view="servicesView">Open Services →</button>
+                                </div>
+                                <div class="guide-nav-item">
+                                    <span class="guide-nav-icon">📦</span>
+                                    <strong>Deployments</strong>
+                                    <p>See all your deployed apps, rerun them, or remove them.</p>
+                                    <button type="button" class="guide-goto-btn" data-goto-view="deploymentsView">Open Deployments →</button>
+                                </div>
+                                <div class="guide-nav-item">
+                                    <span class="guide-nav-icon">📜</span>
+                                    <strong>Log History</strong>
+                                    <p>Activity record — who signed in, what changed, when.</p>
+                                    <button type="button" class="guide-goto-btn" data-goto-view="logsView">Open Logs →</button>
+                                </div>
+                                <div class="guide-nav-item">
+                                    <span class="guide-nav-icon">❓</span>
+                                    <strong>Help</strong>
+                                    <p>This guide — bookmark it anytime you get stuck.</p>
+                                </div>
+                            </div>
+                            <div class="guide-tip">
+                                <strong>Top-right corner:</strong> Use the theme dropdown (🌙 Dark / ☀️ Light) to change appearance. The green badge means the system is connected.
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 4. Chat -->
+                    <section id="guide-chat" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">🤖</span>
+                            <span class="guide-section-heading">Using the Chat Assistant</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">The Chat section helps you request changes to cloud infrastructure by typing what you want — like messaging a helpful colleague.</p>
+                            <h4>Step-by-step</h4>
+                            <div class="guide-steps-vertical">
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">1</span>
+                                    <div>
+                                        <strong>Pick Service and Account</strong>
+                                        <p>At the top, choose <em>what type of resource</em> (e.g. EC2, S3) and <em>which environment</em> (e.g. production, development). If unsure, ask your team which account to use.</p>
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">2</span>
+                                    <div>
+                                        <strong>Describe your request</strong>
+                                        <p>Type in normal sentences. Examples: "Scale to 2 replicas", "Create a new storage bucket with encryption", "Add monitoring tags". You can also click the colored <strong>Quick action</strong> chips for common tasks.</p>
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">3</span>
+                                    <div>
+                                        <strong>Review the proposed changes</strong>
+                                        <p>The portal shows a <em>before and after</em> comparison. Read it carefully — green usually means "adding", red may mean "removing". Click <strong>Confirm</strong> if it looks right, or <strong>Reject</strong> to cancel.</p>
+                                    </div>
+                                </div>
+                                <div class="guide-step-block">
+                                    <span class="guide-step-num">4</span>
+                                    <div>
+                                        <strong>Review the plan &amp; apply</strong>
+                                        <p>You'll see a detailed plan of what will happen. If everything looks good, approve any required review step, then click <strong>Apply Changes</strong> to make it live.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="guide-tip">
+                                <strong>Tip:</strong> Be specific. Instead of "fix the server", try "Increase the server size to handle more traffic in production."
+                            </div>
+                            <button type="button" class="guide-goto-btn" data-goto-view="sspView">Try Chat now →</button>
+                        </div>
+                    </section>
+
+                    <!-- 5. Dashboard -->
+                    <section id="guide-dashboard" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">📊</span>
+                            <span class="guide-section-heading">Using the Dashboard</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">The Dashboard is your <strong>control panel</strong> for viewing and creating cloud resources — virtual servers, storage, databases, load balancers, and more.</p>
+                            <h4>What you'll see</h4>
+                            <ul class="guide-list">
+                                <li>Lists of existing resources (instances, buckets, tables, etc.)</li>
+                                <li><strong>Create</strong> or <strong>Launch</strong> buttons to add new resources</li>
+                                <li>Forms that ask for names and basic settings — fill required fields marked with *</li>
+                            </ul>
+                            <h4>How to create something new</h4>
+                            <ol class="guide-list numbered">
+                                <li>Open <strong>Dashboard</strong> from the left menu</li>
+                                <li>Find the resource type you need (e.g. "EC2 Instance", "S3 Bucket")</li>
+                                <li>Click the create button and fill in the form</li>
+                                <li>Submit — you'll get a success or error message at the top of the screen</li>
+                            </ol>
+                            <div class="guide-warn">
+                                <strong>Important:</strong> Creating resources may incur cloud costs. When in doubt, confirm with your team before creating production resources.
+                            </div>
+                            <button type="button" class="guide-goto-btn" data-goto-view="dashboardView">Open Dashboard →</button>
+                        </div>
+                    </section>
+
+                    <!-- 6. Services / Deploy -->
+                    <section id="guide-services" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">🚀</span>
+                            <span class="guide-section-heading">Deploying Your Application (Services)</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">The <strong>Services</strong> section is where you publish apps and websites to the cloud. Pick the option that matches what you have:</p>
+
+                            <div class="guide-option-cards">
+                                <div class="guide-option-card">
+                                    <h4>🌐 Static Website</h4>
+                                    <p><strong>Best for:</strong> HTML/CSS/JS sites, landing pages, simple front-end files.</p>
+                                    <p><strong>You need:</strong> A folder of website files (not a ZIP of source code with a build step).</p>
+                                    <p><strong>Steps:</strong> Click "Deploy Website" → choose your folder → enter app name and optional domain → submit.</p>
+                                </div>
+                                <div class="guide-option-card">
+                                    <h4>📁 Upload Code &amp; Deploy</h4>
+                                    <p><strong>Best for:</strong> Python, Node.js, Go, or Java projects packaged as a ZIP file.</p>
+                                    <p><strong>You need:</strong> Your project in a .zip file. The portal builds a container automatically.</p>
+                                    <p><strong>Steps:</strong> Click "Upload &amp; Deploy" → enter app name → upload ZIP → submit.</p>
+                                </div>
+                            </div>
+
+                            <div class="guide-tip">
+                                <strong>Not sure which to pick?</strong> Simple website → Static Website. Python/Node/Java project → Upload Code &amp; Deploy.
+                            </div>
+                            <button type="button" class="guide-goto-btn" data-goto-view="servicesView">Go to Services →</button>
+                        </div>
+                    </section>
+
+                    <!-- 7. Deployments -->
+                    <section id="guide-deployments" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">📦</span>
+                            <span class="guide-section-heading">Managing Deployments</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">After you deploy an app, it appears in the <strong>Deployments</strong> table with name, type, status, URL, and last updated time.</p>
+                            <h4>Understanding status badges</h4>
+                            <ul class="guide-list">
+                                <li><span class="guide-badge-demo applied">APPLIED</span> — Deployment succeeded; your app is running</li>
+                                <li><span class="guide-badge-demo error">ERROR</span> — Something failed; click ▸ on the row to see details</li>
+                            </ul>
+                            <h4>What the action buttons do</h4>
+                            <table class="guide-table">
+                                <tr><th>Button</th><th>When to use it</th></tr>
+                                <tr><td>↻ Rerun</td><td>Run the same deployment again</td></tr>
+                                <tr><td>✏️ Edit</td><td>Change name, port, or platform, then redeploy</td></tr>
+                                <tr><td>✕ Destroy</td><td>Permanently remove the deployment</td></tr>
+                            </table>
+                            <p>Click the <strong>▸</strong> arrow on any row to expand ID, created date, and extra details. Use search and filters at the top to find deployments quickly.</p>
+                            <button type="button" class="guide-goto-btn" data-goto-view="deploymentsView">View Deployments →</button>
+                        </div>
+                    </section>
+
+                    <!-- 8. Logs -->
+                    <section id="guide-logs" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">📜</span>
+                            <span class="guide-section-heading">Activity Logs</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">Log History records important actions: sign-ins, deployments, approvals, and changes. Useful for auditing and troubleshooting.</p>
+                            <ul class="guide-list">
+                                <li><strong>Search</strong> — type a username, action, or keyword to filter</li>
+                                <li><strong>Level filter</strong> — show only warnings or errors if needed</li>
+                                <li><strong>Export</strong> — download logs as a spreadsheet (CSV) for reporting</li>
+                            </ul>
+                            <p>Regular users typically see their own activity. Administrators may see all users' logs.</p>
+                            <button type="button" class="guide-goto-btn" data-goto-view="logsView">Open Log History →</button>
+                        </div>
+                    </section>
+
+                    <!-- 9. Admin -->
+                    <section id="guide-admin" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">👥</span>
+                            <span class="guide-section-heading">For Administrators</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">If your role is <strong>admin</strong>, you have extra responsibilities:</p>
+                            <h4>Approving new users</h4>
+                            <ol class="guide-list numbered">
+                                <li>Click <strong>Users</strong> in the left menu (a red badge shows pending count)</li>
+                                <li>Review each request — check username and email look legitimate</li>
+                                <li>Click <strong>✓ Approve</strong> to grant access, or <strong>✕ Reject</strong> to deny</li>
+                            </ol>
+                            <p>Approved users can sign in immediately. Rejected users must contact you if they believe it was a mistake.</p>
+                            <h4>Other admin capabilities</h4>
+                            <ul class="guide-list">
+                                <li>View all audit logs (not just your own)</li>
+                                <li>Full access to all portal features</li>
+                            </ul>
+                            <button type="button" class="guide-goto-btn admin-only-nav" data-goto-view="adminView">Open User Approvals →</button>
+                        </div>
+                    </section>
+
+                    <!-- 10. Glossary -->
+                    <section id="guide-glossary" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">📚</span>
+                            <span class="guide-section-heading">Simple Glossary</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <p class="guide-lead">Quick definitions of terms you may see in the portal:</p>
+                            <dl class="guide-glossary">
+                                <dt>Cloud / AWS</dt>
+                                <dd>Remote computers and storage run by Amazon (or similar providers). You use them over the internet instead of owning physical servers.</dd>
+                                <dt>Deploy</dt>
+                                <dd>Publish or launch your application so it runs and can be accessed by users.</dd>
+                                <dt>EC2</dt>
+                                <dd>A virtual server in the cloud — like a computer in a data center you rent by the hour.</dd>
+                                <dt>S3</dt>
+                                <dd>Cloud storage for files — good for websites, backups, and documents.</dd>
+                                <dt>Docker / Container</dt>
+                                <dd>A packaged way to run an application with everything it needs bundled together.</dd>
+                                <dt>Deployment</dt>
+                                <dd>One recorded attempt to publish your app. You can rerun or delete deployments from the Deployments page.</dd>
+                                <dt>Environment / Account</dt>
+                                <dd>A separate space for resources — often "development" (for testing) vs "production" (for real users).</dd>
+                                <dt>YAML / Plan</dt>
+                                <dd>Technical descriptions of proposed changes. Review the summary; you don't need to edit these files yourself.</dd>
+                                <dt>Pull Request (PR)</dt>
+                                <dd>A review step where changes are checked before going live — like asking a colleague to approve before publishing.</dd>
+                                <dt>Region</dt>
+                                <dd>Geographic location of cloud data centers (e.g. US, Europe). Pick the one your organization uses.</dd>
+                            </dl>
+                        </div>
+                    </section>
+
+                    <!-- 11. FAQ -->
+                    <section id="guide-faq" class="guide-section">
+                        <button type="button" class="guide-section-toggle" aria-expanded="false">
+                            <span class="guide-section-icon">💬</span>
+                            <span class="guide-section-heading">Frequently Asked Questions</span>
+                            <span class="guide-chevron">▼</span>
+                        </button>
+                        <div class="guide-section-body">
+                            <div class="guide-faq-item">
+                                <strong>Q: I submitted a signup request but can't log in.</strong>
+                                <p>A: Your account is waiting for admin approval. Contact your team lead or IT administrator.</p>
+                            </div>
+                            <div class="guide-faq-item">
+                                <strong>Q: The page says "API Offline".</strong>
+                                <p>A: The backend server may not be running. Contact your administrator or restart the portal using the start script your team provided.</p>
+                            </div>
+                            <div class="guide-faq-item">
+                                <strong>Q: My deployment shows ERROR.</strong>
+                                <p>A: Click ▸ on the row to expand details and read the error message. Common fixes: wrong file type, missing files in ZIP, or invalid app name.</p>
+                            </div>
+                            <div class="guide-faq-item">
+                                <strong>Q: I don't know which Service or Account to pick in Chat.</strong>
+                                <p>A: Ask your team or manager. Using the wrong environment can affect live systems.</p>
+                            </div>
+                            <div class="guide-faq-item">
+                                <strong>Q: How do I change the screen theme?</strong>
+                                <p>A: Use the dropdown in the top-right corner — Dark, Light, or Ocean. Your choice is saved automatically.</p>
+                            </div>
+                            <div class="guide-faq-item">
+                                <strong>Q: How do I sign out?</strong>
+                                <p>A: Click the power button (⏻) next to your name at the bottom of the left menu.</p>
+                            </div>
+                            <div class="guide-faq-item">
+                                <strong>Q: Who do I contact for help?</strong>
+                                <p>A: Reach out to your portal administrator or internal IT support team. Share screenshots and the error message you see.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <!-- Admin: User Approvals -->
+            <div id="adminView" class="view-panel">
+                <div class="admin-header">
+                    <div>
+                        <h3 class="admin-title">User Approvals</h3>
+                        <p class="admin-sub">Review signup requests and grant portal access</p>
+                    </div>
+                    <button id="refreshPendingBtn" class="btn-refresh-deploy">↻ Refresh</button>
+                </div>
+                <p id="pendingCount" class="deploy-count">0 pending requests</p>
+                <div id="pendingUsersList" class="pending-users-list">
+                    <div class="deploy-loading">Loading pending requests...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        (function () {
+            const theme = localStorage.getItem('portal_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    <script src="validation.js"></script>
+    <script src="portal-auth.js"></script>
+    <script src="portal-ws.js"></script>
+    <script src="portal-ssp.js"></script>
+    <script src="portal-deployments.js"></script>
+    <script src="portal-admin.js"></script>
+    <script src="portal-guide.js"></script>
+    <script src="portal-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "id": "M99",
+  "name": "Example Module",
+  "group": "Platform",
+  "owner": "Platform Engineering",
+  "phase": "P3",
+  "icon": "bi-puzzle",
+  "description": "One sentence on what this module does.",
+  "enabled": false,
+  "ui": {"workspace": "example.html"},
+  "capabilities": [
+    {"id": "first-capability", "name": "First capability", "status": "planned",
+     "summary": "What a user can do once this is built.", "where": "example.html"}
+  ]
+}

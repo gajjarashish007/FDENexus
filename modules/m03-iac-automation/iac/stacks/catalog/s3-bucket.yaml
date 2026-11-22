@@ -1,0 +1,8 @@
+# Organization defaults for s3-bucket. Concrete instances inherit from s3-bucket/defaults.
+components:
+  terraform:
+    s3-bucket/defaults:
+      metadata:
+        type: abstract
+        component: s3-bucket
+      vars: {}

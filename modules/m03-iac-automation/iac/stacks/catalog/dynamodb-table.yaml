@@ -1,0 +1,8 @@
+# Organization defaults for dynamodb-table. Concrete instances inherit from dynamodb-table/defaults.
+components:
+  terraform:
+    dynamodb-table/defaults:
+      metadata:
+        type: abstract
+        component: dynamodb-table
+      vars: {}

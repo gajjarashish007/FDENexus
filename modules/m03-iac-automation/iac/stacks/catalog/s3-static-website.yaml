@@ -1,0 +1,8 @@
+# Organization defaults for s3-static-website. Concrete instances inherit from s3-static-website/defaults.
+components:
+  terraform:
+    s3-static-website/defaults:
+      metadata:
+        type: abstract
+        component: s3-static-website
+      vars: {}

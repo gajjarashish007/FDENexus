@@ -1,0 +1,66 @@
+# FDE Nexus infrastructure pipeline (copy to the root of the GitLab IaC repository).
+#
+# MR pipeline  : validate stacks, then plan every change manifest added by the MR.
+# main pipeline: apply the change manifests added by the merge commit.
+#                Production stacks (stacks/deploy/production/**) need a manual click.
+#
+# AWS access: GitLab OIDC -> IAM role in the hub account (CI_AWS_ROLE_ARN). The Terraform
+# provider then assumes each environment's role (assume_role_arn in the stack).
+stages: [validate, plan, apply]
+
+default:
+  image: ${FDE_IAC_IMAGE}            # an image with atmos >= 1.200, terraform >= 1.10, python3, aws cli
+  id_tokens:
+    AWS_ID_TOKEN:
+      aud: sts.amazonaws.com
+  before_script:
+    - >
+      export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s"
+      $(aws sts assume-role-with-web-identity --role-arn "$CI_AWS_ROLE_ARN"
+      --role-session-name "gitlab-$CI_PIPELINE_ID" --web-identity-token "$AWS_ID_TOKEN"
+      --duration-seconds 3600 --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --output text))
+
+validate:
+  stage: validate
+  before_script: []
+  script:
+    - atmos validate stacks
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+plan:
+  stage: plan
+  script:
+    - |
+      for f in $(git diff --name-only --diff-filter=A "$CI_MERGE_REQUEST_DIFF_BASE_SHA" HEAD -- 'changes/*.json'); do
+        python3 scripts/run_change.py "$f" --mode plan
+      done
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+.apply:
+  stage: apply
+  resource_group: infrastructure     # one apply at a time
+  script:
+    - |
+      for f in $(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'changes/*.json'); do
+        python3 scripts/run_change.py "$f" --mode apply
+      done
+
+apply:
+  extends: .apply
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes: ["stacks/deploy/production/**/*"]
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes: ["changes/*.json"]
+
+apply-production:
+  extends: .apply
+  environment: production
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes: ["stacks/deploy/production/**/*"]
+      when: manual

@@ -1,0 +1,95 @@
+{
+  "id": "M12",
+  "name": "FinOps & Resource Optimization",
+  "group": "Finance",
+  "owner": "FinOps",
+  "phase": "P2",
+  "icon": "bi-cash-coin",
+  "description": "Estimate, allocate, forecast and optimize cloud spend.",
+  "capabilities": [
+    {
+      "id": "cost-estimation",
+      "name": "Cost estimation",
+      "status": "live",
+      "summary": "Monthly estimate on every infrastructure change.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "budgets",
+      "name": "Budgets",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "cost-allocation",
+      "name": "Cost allocation",
+      "status": "partial",
+      "summary": "Tags allow allocation by team and environment; no billing import yet.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "resource-tagging",
+      "name": "Resource tagging",
+      "status": "live",
+      "summary": "Team, owner, environment, tier and request id tags on every resource via provider default_tags.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "cost-forecasting",
+      "name": "Cost forecasting",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "anomaly-detection",
+      "name": "Anomaly detection",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "idle-resource-identification",
+      "name": "Idle resource identification",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "rightsizing",
+      "name": "Rightsizing",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "reserved-capacity-recommendations",
+      "name": "Reserved capacity recommendations",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "storage-optimization",
+      "name": "Storage optimization",
+      "status": "partial",
+      "summary": "S3 lifecycle rules and EFS Infrequent Access transitions by default.",
+      "provided_by": "M02"
+    },
+    {
+      "id": "cost-center-reporting",
+      "name": "Cost center reporting",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "unit-economics",
+      "name": "Unit economics",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "cost-governance",
+      "name": "Cost governance",
+      "status": "partial",
+      "summary": "Sandbox instance-size policy; cost shown to approvers.",
+      "provided_by": "M03"
+    }
+  ],
+  "enabled": true
+}

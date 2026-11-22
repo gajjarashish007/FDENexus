@@ -1,0 +1,102 @@
+{
+  "id": "M11",
+  "name": "Observability & SRE",
+  "group": "Operations",
+  "owner": "SRE",
+  "phase": "P2",
+  "icon": "bi-activity",
+  "description": "Metrics, logs, traces, alerts, incidents, SLOs and reliability analytics.",
+  "capabilities": [
+    {
+      "id": "centralized-metrics",
+      "name": "Centralized metrics",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "logs",
+      "name": "Logs",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "distributed-tracing",
+      "name": "Distributed tracing",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "alert-management",
+      "name": "Alert management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "alert-correlation",
+      "name": "Alert correlation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "incident-management",
+      "name": "Incident management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "root-cause-analysis",
+      "name": "Root cause analysis",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "slo-management",
+      "name": "SLO management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "error-budgets",
+      "name": "Error budgets",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "service-health",
+      "name": "Service health",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "dependency-mapping",
+      "name": "Dependency mapping",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "runbook-automation",
+      "name": "Runbook automation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "capacity-planning",
+      "name": "Capacity planning",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "reliability-analytics",
+      "name": "Reliability analytics",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "post-incident-reporting",
+      "name": "Post-incident reporting",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": false
+}

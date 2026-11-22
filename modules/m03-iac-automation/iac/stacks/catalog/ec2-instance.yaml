@@ -1,0 +1,8 @@
+# Organization defaults for ec2-instance. Concrete instances inherit from ec2-instance/defaults.
+components:
+  terraform:
+    ec2-instance/defaults:
+      metadata:
+        type: abstract
+        component: ec2-instance
+      vars: {}

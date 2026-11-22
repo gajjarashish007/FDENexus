@@ -1,0 +1,60 @@
+{
+  "id": "M01",
+  "name": "Platform Experience & Self-Service Portal",
+  "group": "Experience",
+  "owner": "Platform Product",
+  "phase": "P1",
+  "icon": "bi-grid-1x2",
+  "description": "One front door: dashboard, catalog, requests, approvals, search, assistant.",
+  "enabled": true,
+  "capabilities": [
+    {
+      "id": "unified-dashboard",
+      "name": "Unified dashboard",
+      "status": "live",
+      "summary": "Overview reads live KPIs, request status, health and notifications from the API.",
+      "where": "index.html"
+    },
+    {
+      "id": "service-catalog",
+      "name": "Service catalog",
+      "status": "live",
+      "summary": "Catalog items with input schemas, risk tier and approval rules; admins toggle items in Configure.",
+      "where": "requests.html"
+    },
+    {
+      "id": "self-service-launch-ec2-dynamodb-s3-website-and-more",
+      "name": "Self-service launch (EC2, DynamoDB, S3 website and more)",
+      "status": "live",
+      "summary": "Guided wizard; every launch becomes a reviewed Terraform/Atmos change in M03.",
+      "where": "launch.html"
+    },
+    {
+      "id": "request-management",
+      "name": "Request management",
+      "status": "live",
+      "summary": "Create, view, cancel requests; per-user visibility.",
+      "where": "requests.html"
+    },
+    {
+      "id": "approval-center",
+      "name": "Approval center",
+      "status": "live",
+      "summary": "Approve or reject requests and infrastructure changes; requesters cannot approve their own.",
+      "where": "changes.html"
+    },
+    {
+      "id": "global-search",
+      "name": "Global search",
+      "status": "live",
+      "summary": "Searches catalog, requests and inventory.",
+      "where": "search.html"
+    },
+    {
+      "id": "ai-assistant",
+      "name": "AI assistant",
+      "status": "partial",
+      "summary": "Keyword help API (/api/assistant). No LLM or UI yet; the AI platform is M09."
+    }
+  ]
+}

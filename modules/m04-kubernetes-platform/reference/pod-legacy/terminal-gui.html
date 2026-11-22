@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Terminal GUI</title>
+    <style>
+        :root {
+            --terminal-bg: #0d1117;
+            --terminal-fg: #c9d1d9;
+            --terminal-green: #7ce38b;
+            --terminal-blue: #58a6ff;
+            --terminal-red: #ff7b72;
+            --terminal-yellow: #ffa657;
+            --terminal-border: #30363d;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --radius: 0.75rem;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+            color: var(--terminal-fg);
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h2 {
+            color: var(--terminal-green);
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .header p {
+            color: var(--terminal-fg);
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+        
+        .terminal-window {
+            background: var(--terminal-bg);
+            border: 1px solid var(--terminal-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .terminal-header {
+            background: linear-gradient(90deg, #21262d 0%, #30363d 100%);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--terminal-border);
+        }
+        
+        .terminal-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-button.close { background: #ff5f57; }
+        .terminal-button.minimize { background: #ffbd2e; }
+        .terminal-button.maximize { background: #28ca42; }
+        
+        .terminal-title {
+            color: var(--terminal-fg);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: 1rem;
+        }
+        
+        .terminal {
+            background: var(--terminal-bg);
+            padding: 1.5rem;
+            height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .terminal::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .terminal::-webkit-scrollbar-track {
+            background: var(--terminal-bg);
+        }
+        
+        .terminal::-webkit-scrollbar-thumb {
+            background: var(--terminal-border);
+            border-radius: 4px;
+        }
+        
+        .terminal::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+        
+        .input-line {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .prompt {
+            color: var(--terminal-green);
+            margin-right: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .prompt::before {
+            content: "➜ ";
+            color: var(--terminal-blue);
+        }
+        
+        #command-input {
+            background: transparent;
+            border: none;
+            color: var(--terminal-fg);
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            flex: 1;
+            caret-color: var(--terminal-green);
+        }
+        
+        .output {
+            color: var(--terminal-fg);
+            margin: 0.5rem 0;
+        }
+        
+        .output.success {
+            color: var(--terminal-green);
+        }
+        
+        .output.info {
+            color: var(--terminal-blue);
+        }
+        
+        .output.warning {
+            color: var(--terminal-yellow);
+        }
+        
+        .error {
+            color: var(--terminal-red);
+            font-weight: 500;
+        }
+        
+        .command-history {
+            color: var(--terminal-blue);
+            opacity: 0.8;
+        }
+        
+        /* Animations */
+        .terminal-window {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .command-line {
+            color: var(--terminal-fg);
+            margin: 0.5rem 0;
+            font-weight: 500;
+        }
+        
+        .prompt-display {
+            color: var(--terminal-green);
+            font-weight: 600;
+        }
+        
+        .prompt-display::before {
+            content: "➜ ";
+            color: var(--terminal-blue);
+        }
+        
+        .output {
+            color: var(--terminal-fg);
+            margin: 0.25rem 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .output.success {
+            color: var(--terminal-green);
+        }
+        
+        .output.info {
+            color: var(--terminal-blue);
+        }
+        
+        .output.warning {
+            color: var(--terminal-yellow);
+        }
+        
+        .error-output {
+            color: var(--terminal-red);
+            font-weight: 500;
+        }
+        
+        .pod-controls {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--terminal-border);
+            border-radius: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .pod-input {
+            background: var(--terminal-bg);
+            border: 1px solid var(--terminal-border);
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            color: var(--terminal-fg);
+            font-family: inherit;
+            min-width: 150px;
+        }
+        
+        .pod-input:focus {
+            outline: none;
+            border-color: var(--terminal-blue);
+        }
+        
+        .connect-btn, .disconnect-btn {
+            background: var(--terminal-blue);
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .disconnect-btn {
+            background: var(--terminal-red);
+        }
+        
+        .connect-btn:hover {
+            background: #4a90e2;
+        }
+        
+        .disconnect-btn:hover {
+            background: #e74c3c;
+        }
+        
+        .connected {
+            color: var(--terminal-green);
+        }
+        
+        .error-output {
+            color: var(--terminal-red);
+        }
+        
+        .cursor {
+            display: inline-block;
+            background: var(--terminal-green);
+            width: 2px;
+            height: 1.2em;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .terminal { 
+                height: 400px;
+                padding: 1rem;
+                font-size: 12px;
+            }
+            .header h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>💻 Linux Terminal GUI</h2>
+            <p>Interactive command line interface</p>
+        </div>
+        
+        <div class="terminal-window">
+            <div class="terminal" id="terminal-output">
+                <div class="pod-controls">
+                    <input type="text" id="pod-name" placeholder="Pod name" class="pod-input">
+                    <input type="text" id="namespace" placeholder="Namespace (default)" class="pod-input">
+                    <button onclick="connectToPod()" class="connect-btn">Connect to Pod</button>
+                    <button onclick="disconnectFromPod()" class="disconnect-btn">Disconnect</button>
+                </div>
+                
+                <div class="input-line">
+                    <span class="prompt" id="terminal-prompt">ubuntu@terminal</span>
+                    <input type="text" id="command-input" placeholder="Enter command..." autofocus>
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let connectedPod = null;
+        let connectedNamespace = 'default';
+        let currentDir = '/home/user';
+        let commandHistory = [];
+        let historyIndex = -1;
+        
+        const terminal = document.getElementById('terminal-output');
+        const commandInput = document.getElementById('command-input');
+        const prompt = document.getElementById('terminal-prompt');
+
+        // File system simulation
+        const fileSystem = {
+            '/': {
+                type: 'dir',
+                contents: {
+                    'home': {
+                        type: 'dir',
+                        contents: {
+                            'user': {
+                                type: 'dir',
+                                contents: {
+                                    'documents': { type: 'dir', contents: {} },
+                                    'downloads': { type: 'dir', contents: {} },
+                                    'test.txt': { type: 'file', content: 'Hello World!' },
+                                    'script.sh': { type: 'file', content: '#!/bin/bash\necho "Script executed"' }
+                                }
+                            }
+                        }
+                    },
+                    'etc': {
+                        type: 'dir',
+                        contents: {
+                            'hosts': { type: 'file', content: '127.0.0.1 localhost' },
+                            'passwd': { type: 'file', content: 'root:x:0:0:root:/root:/bin/bash\nuser:x:1000:1000:user:/home/user:/bin/bash' }
+                        }
+                    },
+                    'var': { type: 'dir', contents: {} },
+                    'tmp': { type: 'dir', contents: {} }
+                }
+            }
+        };
+
+        let connectedPod = null;
+        let availablePods = [];
+
+        // Simulate pod discovery
+        async function discoverPods() {
+            try {
+                const response = await fetch('/api/pods');
+                const data = await response.json();
+                availablePods = Array.isArray(data) ? data : (data.pods || []);
+            } catch (error) {
+                availablePods = [
+                    { name: 'web-server-pod', status: 'Running', ip: '10.0.1.10' },
+                    { name: 'database-pod', status: 'Running', ip: '10.0.1.11' },
+                    { name: 'cache-pod', status: 'Running', ip: '10.0.1.12' },
+                    { name: 'worker-pod', status: 'Pending', ip: '10.0.1.13' }
+                ];
+            }
+        }
+
+        const commands = {
+            help: () => {
+                return `Available commands:
+ls - list directory contents
+cd - change directory
+pwd - print working directory
+cat - display file contents
+mkdir - create directory
+touch - create file
+rm - remove file/directory
+clear - clear terminal
+whoami - display current user
+date - display current date
+echo - display text
+history - show command history
+
+Pod Management Commands:
+kubectl - Kubernetes CLI commands
+pod-list - list available pods
+pod-connect <pod-name> - connect to a pod
+pod-exec <pod-name> <command> - execute command in pod
+pod-logs <pod-name> - view pod logs
+pod-status - show current pod connection
+pod-disconnect - disconnect from current pod
+ssh <pod-ip> - SSH into pod`;
+            },
+
+            ls: (args) => {
+                const path = args[0] || currentDir;
+                const dir = getPath(path);
+                if (!dir || dir.type !== 'dir') {
+                    return `ls: cannot access '${path}': No such file or directory`;
+                }
+                return Object.keys(dir.contents).join('  ');
+            },
+
+            pwd: () => currentDir,
+
+            cd: (args) => {
+                if (!args[0]) {
+                    currentDir = '/home/user';
+                    return '';
+                }
+                const newPath = resolvePath(args[0]);
+                const dir = getPath(newPath);
+                if (!dir || dir.type !== 'dir') {
+                    return `cd: ${args[0]}: No such file or directory`;
+                }
+                currentDir = newPath;
+                return '';
+            },
+
+            cat: (args) => {
+                if (!args[0]) return 'cat: missing file operand';
+                const file = getPath(resolvePath(args[0]));
+                if (!file) return `cat: ${args[0]}: No such file or directory`;
+                if (file.type !== 'file') return `cat: ${args[0]}: Is a directory`;
+                return file.content;
+            },
+
+            mkdir: (args) => {
+                if (!args[0]) return 'mkdir: missing operand';
+                const path = resolvePath(args[0]);
+                const parentPath = path.substring(0, path.lastIndexOf('/')) || '/';
+                const dirName = path.substring(path.lastIndexOf('/') + 1);
+                const parent = getPath(parentPath);
+                if (!parent || parent.type !== 'dir') {
+                    return `mkdir: cannot create directory '${args[0]}'`;
+                }
+                parent.contents[dirName] = { type: 'dir', contents: {} };
+                return '';
+            },
+
+            touch: (args) => {
+                if (!args[0]) return 'touch: missing file operand';
+                const path = resolvePath(args[0]);
+                const parentPath = path.substring(0, path.lastIndexOf('/')) || '/';
+                const fileName = path.substring(path.lastIndexOf('/') + 1);
+                const parent = getPath(parentPath);
+                if (!parent || parent.type !== 'dir') {
+                    return `touch: cannot touch '${args[0]}'`;
+                }
+                parent.contents[fileName] = { type: 'file', content: '' };
+                return '';
+            },
+
+            rm: (args) => {
+                if (!args[0]) return 'rm: missing operand';
+                const path = resolvePath(args[0]);
+                const parentPath = path.substring(0, path.lastIndexOf('/')) || '/';
+                const itemName = path.substring(path.lastIndexOf('/') + 1);
+                const parent = getPath(parentPath);
+                if (!parent || !parent.contents[itemName]) {
+                    return `rm: cannot remove '${args[0]}'`;
+                }
+                delete parent.contents[itemName];
+                return '';
+            },
+
+            clear: () => {
+                terminal.innerHTML = '';
+                return '';
+            },
+
+            whoami: () => 'user',
+
+            date: () => new Date().toString(),
+
+            echo: (args) => args.join(' '),
+
+            history: () => commandHistory.map((cmd, i) => `${i + 1}  ${cmd}`).join('\n'),
+
+            kubectl: (args) => {
+                if (!args.length) return 'kubectl: missing command';
+                
+                const subcommand = args[0];
+                switch (subcommand) {
+                    case 'get':
+                        if (args[1] === 'pods') {
+                            return availablePods.map(pod => 
+                                `${pod.name.padEnd(20)} ${pod.status.padEnd(10)} ${pod.ip}`
+                            ).join('\n');
+                        }
+                        return 'kubectl get: resource type required';
+                    case 'describe':
+                        if (args[1] === 'pod' && args[2]) {
+                            const pod = availablePods.find(p => p.name === args[2]);
+                            if (!pod) return `Error from server (NotFound): pods "${args[2]}" not found`;
+                            return `Name: ${pod.name}\nStatus: ${pod.status}\nIP: ${pod.ip}\nNode: worker-node-1`;
+                        }
+                        return 'kubectl describe: resource name required';
+                    case 'exec':
+                        if (args[1] && args[2]) {
+                            return `Executing command in pod ${args[1]}: ${args.slice(2).join(' ')}`;
+                        }
+                        return 'kubectl exec: pod name and command required';
+                    default:
+                        return `kubectl: unknown command "${subcommand}"`;
+                }
+            },
+
+            'pod-list': () => {
+                return `Available Pods:
+web-server-pod       Running    10.0.1.10
+database-pod         Running    10.0.1.11
+cache-pod            Running    10.0.1.12
+worker-pod           Pending    10.0.1.13`;
+            },
+
+            'pod-connect': (args) => {
+                if (!args[0]) return 'pod-connect: pod name required';
+                const pod = availablePods.find(p => p.name === args[0]);
+                if (!pod) return `Pod "${args[0]}" not found`;
+                if (pod.status !== 'Running') return `Pod "${args[0]}" is not running`;
+                
+                connectedPod = pod;
+                return `Connected to pod: ${pod.name} (${pod.ip})`;
+            },
+
+            'pod-exec': (args) => {
+                if (!args[0]) return 'pod-exec: pod name required';
+                if (!args[1]) return 'pod-exec: command required';
+                
+                const pod = availablePods.find(p => p.name === args[0]);
+                if (!pod) return `Pod "${args[0]}" not found`;
+                if (pod.status !== 'Running') return `Pod "${args[0]}" is not running`;
+                
+                const command = args.slice(1).join(' ');
+                return `Executing in ${pod.name}: ${command}\n[Simulated output for: ${command}]`;
+            },
+
+            'pod-logs': (args) => {
+                if (!args[0]) return 'pod-logs: pod name required';
+                const pod = availablePods.find(p => p.name === args[0]);
+                if (!pod) return `Pod "${args[0]}" not found`;
+                
+                return `Logs for ${pod.name}:\n2024-01-01 10:00:00 INFO Starting application\n2024-01-01 10:00:01 INFO Server listening on port 8080\n2024-01-01 10:00:02 INFO Ready to accept connections`;
+            },
+
+            'pod-status': () => {
+                if (!connectedPod) return 'Not connected to any pod';
+                return `Connected to: ${connectedPod.name} (${connectedPod.ip})`;
+            },
+
+            'pod-disconnect': () => {
+                if (!connectedPod) return 'Not connected to any pod';
+                const podName = connectedPod.name;
+                connectedPod = null;
+                return `Disconnected from pod: ${podName}`;
+            },
+
+            ssh: (args) => {
+                if (!args[0]) return 'ssh: hostname required';
+                const target = args[0];
+                const pod = availablePods.find(p => p.ip === target || p.name === target);
+                
+                if (pod) {
+                    connectedPod = pod;
+                    return `SSH connection established to ${target}\nWelcome to ${pod.name}`;
+                }
+                return `ssh: connect to host ${target} port 22: Connection refused`;
+            }
+        };
+
+        function getPath(path) {
+            const parts = path.split('/').filter(p => p);
+            let current = fileSystem['/'];
+            for (const part of parts) {
+                if (!current.contents || !current.contents[part]) return null;
+                current = current.contents[part];
+            }
+            return current;
+        }
+
+        function resolvePath(path) {
+            if (path.startsWith('/')) return path;
+            if (currentDir === '/') return '/' + path;
+            return currentDir + '/' + path;
+        }
+
+        function addOutput(text, className = 'output') {
+            const div = document.createElement('div');
+            div.className = className;
+            div.textContent = text;
+            div.style.color = '#c9d1d9';
+            div.style.whiteSpace = 'pre-wrap';
+            div.style.marginBottom = '5px';
+            
+            const inputLine = terminal.querySelector('.input-line');
+            if (inputLine) {
+                terminal.insertBefore(div, inputLine);
+            } else {
+                terminal.appendChild(div);
+            }
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function executeCommand(input) {
+            const [command, ...args] = input.trim().split(' ');
+            
+            if (!command) return;
+
+            commandHistory.push(input);
+            historyIndex = commandHistory.length;
+
+            // Show command with pod context
+            const promptText = connectedPod ? 
+                `user@${connectedPod.name}:${currentDir}$ ${input}` : 
+                `user@terminal:${currentDir}$ ${input}`;
+            addOutput(promptText, 'command-line');
+
+            if (commands[command]) {
+                const result = commands[command](args);
+                if (result) {
+                    addOutput(result, 'output');
+                }
+            } else if (command) {
+                addOutput(`${command}: command not found`, 'error-output');
+            }
+
+            // Update prompt with pod context
+            prompt.textContent = connectedPod ? 
+                `user@${connectedPod.name}:${currentDir}$` : 
+                `user@terminal:${currentDir}$`;
+            
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        commandInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const input = commandInput.value;
+                executeCommand(input);
+                commandInput.value = '';
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    commandInput.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    commandInput.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    commandInput.value = '';
+                }
+            }
+        });
+
+        function connectToPod() {
+            const podName = document.getElementById('pod-name').value.trim();
+            const namespace = document.getElementById('namespace').value.trim() || 'default';
+            
+            if (!podName) {
+                addOutput('Error: Pod name required', 'error-output');
+                return;
+            }
+            
+            connectedPod = { name: podName };
+            connectedNamespace = namespace;
+            prompt.textContent = `${podName}@${namespace}`;
+            addOutput(`Connected to pod: ${podName} in namespace: ${namespace}`, 'success');
+        }
+        
+        function disconnectFromPod() {
+            if (connectedPod) {
+                addOutput(`Disconnected from pod: ${connectedPod.name}`, 'info');
+            }
+            connectedPod = null;
+            connectedNamespace = 'default';
+            prompt.textContent = 'ubuntu@terminal';
+        }
+
+        // Initialize
+        discoverPods();
+    </script>
+    </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{
+  "id": "M08",
+  "name": "Security & Compliance Management",
+  "group": "Security",
+  "owner": "Security Engineering",
+  "phase": "P2",
+  "icon": "bi-shield-lock",
+  "description": "Policy-as-code, posture, vulnerabilities, secrets, encryption and audit evidence.",
+  "capabilities": [
+    {
+      "id": "security-policy-engine",
+      "name": "Security policy engine",
+      "status": "partial",
+      "summary": "Deny/warn engine for infrastructure changes.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "policy-as-code",
+      "name": "Policy-as-Code",
+      "status": "partial",
+      "summary": "16 IaC rules evaluated before every change.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "cloud-security-posture-management",
+      "name": "Cloud security posture management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "vulnerability-scanning",
+      "name": "Vulnerability scanning",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "infrastructure-security-scanning",
+      "name": "Infrastructure security scanning",
+      "status": "partial",
+      "summary": "Built-in rules; Checkov/Trivy when installed.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "container-security",
+      "name": "Container security",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "image-signing",
+      "name": "Image signing",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "sbom-management",
+      "name": "SBOM management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "secrets-management",
+      "name": "Secrets management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "certificate-lifecycle",
+      "name": "Certificate lifecycle",
+      "status": "partial",
+      "summary": "ACM certificates with DNS validation; ACM renews automatically.",
+      "provided_by": "M02"
+    },
+    {
+      "id": "kms-and-encryption",
+      "name": "KMS and encryption",
+      "status": "partial",
+      "summary": "Components enforce encryption at rest (EBS, S3, EFS, DynamoDB, EKS secrets).",
+      "provided_by": "M02"
+    },
+    {
+      "id": "network-security",
+      "name": "Network security",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "public-exposure-detection",
+      "name": "Public exposure detection",
+      "status": "partial",
+      "summary": "Rules block public SSH/RDP, public S3 websites in production, open EKS endpoints.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "compliance-monitoring",
+      "name": "Compliance monitoring",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "security-findings",
+      "name": "Security findings",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "risk-scoring",
+      "name": "Risk scoring",
+      "status": "partial",
+      "summary": "Every change gets low/medium/high risk.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "remediation-workflows",
+      "name": "Remediation workflows",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "security-audit-evidence",
+      "name": "Security audit evidence",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": true,
+  "design": {
+    "frameworks": [
+      "CIS Benchmarks",
+      "NIST CSF 2.0",
+      "ISO 27001:2022",
+      "SOC 2"
+    ]
+  }
+}

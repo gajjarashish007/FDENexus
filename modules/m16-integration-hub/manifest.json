@@ -1,0 +1,81 @@
+{
+  "id": "M16",
+  "name": "Enterprise Integration Hub",
+  "group": "Integration",
+  "owner": "Platform Engineering",
+  "phase": "P2",
+  "icon": "bi-plug",
+  "description": "Standard connectors for identity, CI/CD, ITSM, monitoring, messaging, docs, source control, cloud, security and cost tools.",
+  "capabilities": [
+    {
+      "id": "identity-providers",
+      "name": "Identity providers",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "ci-cd-systems",
+      "name": "CI/CD systems",
+      "status": "partial",
+      "summary": "GitLab CI pipeline template.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "itsm-platforms",
+      "name": "ITSM platforms",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "change-management",
+      "name": "Change management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "monitoring-platforms",
+      "name": "Monitoring platforms",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "messaging-systems",
+      "name": "Messaging systems",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "documentation-systems",
+      "name": "Documentation systems",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "source-control",
+      "name": "Source control",
+      "status": "partial",
+      "summary": "GitLab: commit, merge request, status and merge.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "cloud-native-services",
+      "name": "Cloud-native services",
+      "status": "partial",
+      "summary": "AWS through boto3 (accounts, EC2, regions) and Terraform.",
+      "provided_by": "M01/M02"
+    },
+    {
+      "id": "security-tools",
+      "name": "Security tools",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "cost-management-systems",
+      "name": "Cost management systems",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": true
+}

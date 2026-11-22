@@ -1,0 +1,119 @@
+{
+  "id": "M06",
+  "name": "Enterprise Data Governance",
+  "group": "Data",
+  "owner": "Data Governance Office",
+  "phase": "P2",
+  "icon": "bi-shield-check",
+  "description": "Classification, ownership, lineage, quality, retention, residency and evidence for every data class.",
+  "capabilities": [
+    {
+      "id": "data-classification",
+      "name": "Data classification",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-ownership",
+      "name": "Data ownership",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-stewardship",
+      "name": "Data stewardship",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "metadata-catalog",
+      "name": "Metadata catalog",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-lineage",
+      "name": "Data lineage",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-discovery",
+      "name": "Data discovery",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-quality",
+      "name": "Data quality",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-retention",
+      "name": "Data retention",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-residency",
+      "name": "Data residency",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-masking",
+      "name": "Data masking",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "encryption",
+      "name": "Encryption",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-access-approval",
+      "name": "Data access approval",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "sensitive-data-detection",
+      "name": "Sensitive-data detection",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-archival",
+      "name": "Data archival",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "secure-data-deletion",
+      "name": "Secure data deletion",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "compliance-evidence",
+      "name": "Compliance evidence",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": false,
+  "design": {
+    "governed_data": [
+      "operational data",
+      "application data",
+      "audit records",
+      "AI conversations",
+      "embeddings",
+      "prompts",
+      "generated content"
+    ]
+  }
+}

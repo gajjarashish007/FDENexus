@@ -1,0 +1,99 @@
+{
+  "id": "M02",
+  "name": "Cloud Account & Infrastructure Lifecycle",
+  "group": "Infrastructure",
+  "owner": "Platform Engineering",
+  "phase": "P1",
+  "icon": "bi-cloud",
+  "description": "Create, register, baseline and retire accounts and infrastructure.",
+  "enabled": true,
+  "ui": {
+    "workspace": "environments.html"
+  },
+  "capabilities": [
+    {
+      "id": "cloud-account-onboarding",
+      "name": "Cloud account onboarding",
+      "status": "live",
+      "summary": "Connect accounts with a cross-account IAM role (AssumeRole + external ID) or the instance role; connection test.",
+      "where": "aws-accounts.html"
+    },
+    {
+      "id": "account-provisioning",
+      "name": "Account provisioning",
+      "status": "partial",
+      "summary": "New member accounts through AWS Organizations (aws-account component). Needs the management account and a live apply.",
+      "where": "environments.html#provision"
+    },
+    {
+      "id": "account-registration",
+      "name": "Account registration",
+      "status": "live",
+      "summary": "Registered accounts are stored, tested and selectable per user.",
+      "where": "aws-accounts.html"
+    },
+    {
+      "id": "environment-creation",
+      "name": "Environment creation",
+      "status": "live",
+      "summary": "Wizard creates VPC + security baseline as one reviewed change.",
+      "where": "environments.html"
+    },
+    {
+      "id": "region-and-availability-zone-management",
+      "name": "Region and availability zone management",
+      "status": "live",
+      "summary": "Region and AZ picker; real AZs and zone IDs per account in live mode, built-in list in simulation.",
+      "where": "environments.html"
+    },
+    {
+      "id": "vpc-and-networking",
+      "name": "VPC and networking",
+      "status": "live",
+      "summary": "CIDR planner, overlap check per account, NAT none/single/per-AZ, flow logs, S3 endpoint, locked default SG.",
+      "where": "environments.html"
+    },
+    {
+      "id": "compute-provisioning",
+      "name": "Compute provisioning",
+      "status": "live",
+      "summary": "EC2 with IMDSv2, encrypted gp3, Session Manager role, dedicated security group.",
+      "where": "launch.html?type=ec2-instance"
+    },
+    {
+      "id": "storage-provisioning",
+      "name": "Storage provisioning",
+      "status": "live",
+      "summary": "S3 bucket, S3 static website (CloudFront or website endpoint), EFS.",
+      "where": "launch.html?type=s3-bucket"
+    },
+    {
+      "id": "kubernetes-infrastructure",
+      "name": "Kubernetes infrastructure",
+      "status": "live",
+      "summary": "EKS with private API, KMS secrets, audit logs, managed node group, core add-ons.",
+      "where": "launch.html?type=eks-cluster"
+    },
+    {
+      "id": "load-balancing",
+      "name": "Load balancing",
+      "status": "live",
+      "summary": "ALB with HTTPS redirect and TLS 1.3 policy.",
+      "where": "launch.html?type=alb"
+    },
+    {
+      "id": "dns-and-certificates",
+      "name": "DNS and certificates",
+      "status": "live",
+      "summary": "Route 53 zones and ACM certificates with automatic DNS validation.",
+      "where": "launch.html?type=acm-certificate"
+    },
+    {
+      "id": "infrastructure-decommissioning",
+      "name": "Infrastructure decommissioning",
+      "status": "live",
+      "summary": "Remove one resource or a whole environment; destroys run in dependency order after approval.",
+      "where": "environments.html"
+    }
+  ]
+}

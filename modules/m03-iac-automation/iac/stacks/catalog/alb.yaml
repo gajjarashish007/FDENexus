@@ -1,0 +1,8 @@
+# Organization defaults for alb. Concrete instances inherit from alb/defaults.
+components:
+  terraform:
+    alb/defaults:
+      metadata:
+        type: abstract
+        component: alb
+      vars: {}

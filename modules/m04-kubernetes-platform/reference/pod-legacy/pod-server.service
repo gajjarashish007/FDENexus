@@ -1,0 +1,36 @@
+# Install on EC2:
+#   sudo cp pod-server.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable pod-server
+#   sudo systemctl start pod-server
+#
+# Uses start-pod-server.sh so port conflicts and auth env are handled correctly.
+# Edit WorkingDirectory and paths for your host.
+
+[Unit]
+Description=Arlo Pod Dashboard (pod-server)
+After=network.target
+
+[Service]
+Type=forking
+User=root
+WorkingDirectory=/root/cloud-infrastructure/pod
+Environment=POD_AWS_REGION=us-east-2
+Environment=POD_VERSION_ENV=comcast
+Environment=POD_VERSION_CACHE_TTL=45
+Environment=POD_VERSION_REFRESH_SEC=45
+Environment=POD_AUTH_USER=admin
+# Set a strong password here, or use EnvironmentFile with .pod-dashboard.env
+Environment=POD_AUTH_PASSWORD=CHANGE_ME
+Environment=KUBECONFIG=/root/.kube/config
+EnvironmentFile=-/root/cloud-infrastructure/pod/.pod-dashboard.env
+PIDFile=/root/cloud-infrastructure/pod/pod-server.pid
+ExecStart=/bin/bash /root/cloud-infrastructure/pod/start-pod-server.sh start
+ExecStop=/bin/bash /root/cloud-infrastructure/pod/start-pod-server.sh stop
+Restart=on-failure
+RestartSec=15
+StandardOutput=append:/root/cloud-infrastructure/pod/pod-server.log
+StandardError=append:/root/cloud-infrastructure/pod/pod-server.log
+
+[Install]
+WantedBy=multi-user.target

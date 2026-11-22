@@ -1,0 +1,74 @@
+{
+  "id": "M15",
+  "name": "Software Supply Chain & Configuration Management",
+  "group": "Security",
+  "owner": "Platform Security",
+  "phase": "P2",
+  "icon": "bi-box-seam",
+  "description": "Artifacts, SBOM, signing, provenance and configuration baselines.",
+  "capabilities": [
+    {
+      "id": "artifact-registries",
+      "name": "Artifact registries",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "container-image-management",
+      "name": "Container image management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "sbom",
+      "name": "SBOM",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "software-signing",
+      "name": "Software signing",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "provenance",
+      "name": "Provenance",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "dependency-scanning",
+      "name": "Dependency scanning",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "configuration-baselines",
+      "name": "Configuration baselines",
+      "status": "partial",
+      "summary": "Account security baseline component applied with every environment.",
+      "provided_by": "M02"
+    },
+    {
+      "id": "configuration-drift",
+      "name": "Configuration drift",
+      "status": "partial",
+      "summary": "Terraform drift check per component (live mode).",
+      "provided_by": "M03"
+    },
+    {
+      "id": "patch-compliance",
+      "name": "Patch compliance",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "release-artifact-management",
+      "name": "Release artifact management",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": true
+}

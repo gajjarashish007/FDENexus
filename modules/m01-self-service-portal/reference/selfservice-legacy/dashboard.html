@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cloud Dashboard - Available Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>🚀 Available Services</h1>
+                <div class="header-actions">
+                    <span id="connection-status" class="status-badge">Checking...</span>
+                    <span id="region-display">Region: eu-west-1</span>
+                    <button class="btn-view-resources" onclick="window.location.href='index.html'">
+                        📊 View Resources
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="services-grid">
+            <!-- EC2 Instance Card -->
+            <div class="service-card" data-service="ec2">
+                <div class="service-badge compute">COMPUTE</div>
+                <div class="service-icon">💻</div>
+                <h3 class="service-title">EC2 Instance</h3>
+                <p class="service-description">Launch virtual servers in the cloud with flexible compute capacity</p>
+                <div class="svc-card-arch"></div>
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">2min</span>
+                        <span class="metric-label">DEPLOY TIME</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">$0.01</span>
+                        <span class="metric-label">PER HOUR</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">⚡ Quick Launch</span>
+                    <span class="feature-tag">💰 Pay as you go</span>
+                    <span class="feature-tag">🔧 Customizable</span>
+                </div>
+
+                <button class="btn-create" onclick="launchEC2Instance()">
+                    Create Instance →
+                </button>
+            </div>
+
+            <!-- Application Load Balancer Card -->
+            <div class="service-card" data-service="alb">
+                <div class="service-badge networking">NETWORKING</div>
+                <div class="service-icon">🌐</div>
+                <h3 class="service-title">Application Load Balancer</h3>
+                <p class="service-description">Distribute traffic across multiple targets with high availability</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">3min</span>
+                        <span class="metric-label">DEPLOY TIME</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">99.9%</span>
+                        <span class="metric-label">UPTIME SLA</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">🔄 Auto Scaling</span>
+                    <span class="feature-tag">📊 High Availability</span>
+                    <span class="feature-tag">🔍 Monitoring</span>
+                </div>
+
+                <button class="btn-create" onclick="createLoadBalancer('application'); return false;">
+                    Create Load Balancer →
+                </button>
+            </div>
+
+            <!-- Network Load Balancer Card -->
+            <div class="service-card" data-service="alb" data-variant="network">
+                <div class="service-badge networking">NETWORKING</div>
+                <div class="service-icon">⚡</div>
+                <h3 class="service-title">Network Load Balancer</h3>
+                <p class="service-description">Ultra-low latency load balancing for TCP/UDP traffic</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">3min</span>
+                        <span class="metric-label">DEPLOY TIME</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">&lt;1ms</span>
+                        <span class="metric-label">LATENCY</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">⚡ Ultra-fast</span>
+                    <span class="feature-tag">🎯 Static IP</span>
+                    <span class="feature-tag">🔒 TLS Support</span>
+                </div>
+
+                <button class="btn-create" onclick="createLoadBalancer('network'); return false;">
+                    Create NLB →
+                </button>
+            </div>
+
+            <!-- DynamoDB Card -->
+            <div class="service-card" data-service="dynamodb">
+                <div class="service-badge database">DATABASE</div>
+                <div class="service-icon">📊</div>
+                <h3 class="service-title">DynamoDB Table</h3>
+                <p class="service-description">Fast and flexible NoSQL database with automatic backups and scaling</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">&lt;1ms</span>
+                        <span class="metric-label">LATENCY</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">∞</span>
+                        <span class="metric-label">SCALE</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">📈 Millisecond Latency</span>
+                    <span class="feature-tag">🔄 Unlimited Scale</span>
+                    <span class="feature-tag">💾 Serverless</span>
+                </div>
+
+                <button class="btn-create" onclick="createDynamoDBTable(); return false;">
+                    Create Table →
+                </button>
+            </div>
+
+            <!-- S3 Bucket Card -->
+            <div class="service-card" data-service="s3">
+                <div class="service-badge storage">STORAGE</div>
+                <div class="service-icon">🪣</div>
+                <h3 class="service-title">S3 Bucket</h3>
+                <p class="service-description">Scalable object storage with 99.999999999% durability</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">11 9's</span>
+                        <span class="metric-label">DURABILITY</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">∞</span>
+                        <span class="metric-label">CAPACITY</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">🗂️ Object Storage</span>
+                    <span class="feature-tag">🌐 Static Hosting</span>
+                    <span class="feature-tag">🔐 Encrypted</span>
+                </div>
+
+                <button class="btn-create" onclick="createS3Bucket(); return false;">
+                    Create Bucket →
+                </button>
+            </div>
+
+            <!-- Auto Scaling Group Card -->
+            <div class="service-card" data-service="asg">
+                <div class="service-badge compute">COMPUTE</div>
+                <div class="service-icon">📈</div>
+                <h3 class="service-title">Auto Scaling Group</h3>
+                <p class="service-description">Automatically adjust capacity to maintain steady performance</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">5min</span>
+                        <span class="metric-label">DEPLOY TIME</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Auto</span>
+                        <span class="metric-label">SCALING</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">📊 Auto Scale</span>
+                    <span class="feature-tag">💰 Cost Optimize</span>
+                    <span class="feature-tag">🔄 Health Checks</span>
+                </div>
+
+                <button class="btn-create" onclick="createAutoScalingGroup(); return false;">
+                    Create ASG →
+                </button>
+            </div>
+
+            <!-- SSL Certificate Card -->
+            <div class="service-card" data-service="acm">
+                <div class="service-badge security">SECURITY</div>
+                <div class="service-icon">🔒</div>
+                <h3 class="service-title">SSL Certificate</h3>
+                <p class="service-description">Provision and manage SSL/TLS certificates for your domains</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">Free</span>
+                        <span class="metric-label">COST</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Auto</span>
+                        <span class="metric-label">RENEWAL</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">🔐 Free SSL</span>
+                    <span class="feature-tag">🔄 Auto Renew</span>
+                    <span class="feature-tag">🌐 Wildcard</span>
+                </div>
+
+                <button class="btn-create" onclick="requestCertificate(); return false;">
+                    Request Certificate →
+                </button>
+            </div>
+
+            <!-- Static Website Card -->
+            <div class="service-card" data-service="static-website">
+                <div class="service-badge storage">STORAGE</div>
+                <div class="service-icon">🌐</div>
+                <h3 class="service-title">Static Website</h3>
+                <p class="service-description">Host static websites directly from S3 with global CDN</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">1min</span>
+                        <span class="metric-label">DEPLOY TIME</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Global</span>
+                        <span class="metric-label">CDN</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">🚀 Fast Deploy</span>
+                    <span class="feature-tag">🌍 Global CDN</span>
+                    <span class="feature-tag">💰 Low Cost</span>
+                </div>
+
+                <button class="btn-create" onclick="deployStaticWebsiteHosting()">
+                    Deploy Website →
+                </button>
+            </div>
+
+            <!-- Upload Code & Docker Build -->
+            <div class="service-card" data-service="code-upload">
+                <div class="service-badge compute">DEPLOY</div>
+                <div class="service-icon">📦</div>
+                <h3 class="service-title">Upload Code & Deploy</h3>
+                <p class="service-description">Upload ZIP (HTML, Python, Node.js, Go, Java) — auto-build Docker image and deploy</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">Auto</span>
+                        <span class="metric-label">DETECT</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">ECR</span>
+                        <span class="metric-label">REGISTRY</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">🐍 Python</span>
+                    <span class="feature-tag">📄 HTML/JS</span>
+                    <span class="feature-tag">🐳 Docker</span>
+                </div>
+
+                <button class="btn-create" onclick="deployCodeUpload()">
+                    Upload & Deploy →
+                </button>
+            </div>
+
+            <!-- ECS Fargate -->
+            <div class="service-card" data-service="ecs">
+                <div class="service-badge compute">CONTAINERS</div>
+                <div class="service-icon">🚢</div>
+                <h3 class="service-title">ECS Fargate</h3>
+                <p class="service-description">Run containers without managing servers — serverless compute for containers</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">0</span>
+                        <span class="metric-label">SERVERS</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Auto</span>
+                        <span class="metric-label">SCALE</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">🐳 Containers</span>
+                    <span class="feature-tag">📊 Fargate</span>
+                    <span class="feature-tag">🔒 Private</span>
+                </div>
+
+                <button class="btn-create" onclick="deployCodeUpload()">
+                    Deploy Container →
+                </button>
+            </div>
+
+            <!-- Lambda Function -->
+            <div class="service-card" data-service="lambda">
+                <div class="service-badge compute">SERVERLESS</div>
+                <div class="service-icon">λ</div>
+                <h3 class="service-title">Lambda Function</h3>
+                <p class="service-description">Run code without provisioning servers — pay only for compute time used</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">15min</span>
+                        <span class="metric-label">MAX RUN</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">$0</span>
+                        <span class="metric-label">IDLE COST</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">⚡ Event-driven</span>
+                    <span class="feature-tag">🐍 Python/Node</span>
+                    <span class="feature-tag">💰 Pay per use</span>
+                </div>
+
+                <button class="btn-create" onclick="deployCodeUpload('lambda')">
+                    Deploy Function →
+                </button>
+            </div>
+
+            <!-- RDS Database -->
+            <div class="service-card" data-service="rds">
+                <div class="service-badge database">DATABASE</div>
+                <div class="service-icon">🗄️</div>
+                <h3 class="service-title">RDS Database</h3>
+                <p class="service-description">Managed relational database — PostgreSQL, MySQL, MariaDB, Oracle, SQL Server</p>
+                <div class="svc-card-arch"></div>
+                
+                <div class="service-metrics">
+                    <div class="metric">
+                        <span class="metric-value">Multi-AZ</span>
+                        <span class="metric-label">HA</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Auto</span>
+                        <span class="metric-label">BACKUP</span>
+                    </div>
+                </div>
+
+                <div class="service-features">
+                    <span class="feature-tag">🐘 PostgreSQL</span>
+                    <span class="feature-tag">🔄 Read replicas</span>
+                    <span class="feature-tag">🔐 Encrypted</span>
+                </div>
+
+                <button class="btn-create" onclick="createDynamoDBTable('rds')">
+                    Create Database →
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-semibold" id="modal-title">Action</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4" id="modal-body"></div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary px-4" id="modal-submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast align-items-center text-white border-0 position-fixed bottom-0 end-0 m-4" role="alert" style="display:none;z-index:2000;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="validation.js"></script>
+    <script src="service-diagrams.js"></script>
+    <script src="app.js"></script>
+    <script src="app-extended.js"></script>
+    <script src="app-deploy.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkConnection();
+        });
+    </script>
+</body>
+</html>

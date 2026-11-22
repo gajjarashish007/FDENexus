@@ -1,0 +1,14 @@
+{
+  "account-baseline":  {"version": "1.0.0", "status": "active", "category": "Accounts",   "description": "Per-account security baseline: EBS default encryption, S3 public access block, IAM password policy, Access Analyzer, optional GuardDuty."},
+  "aws-account":       {"version": "1.0.0", "status": "active", "category": "Accounts",   "description": "New member account in AWS Organizations (run against the management account)."},
+  "vpc":               {"version": "1.0.0", "status": "active", "category": "Networking", "description": "VPC with public and private subnets per AZ, NAT (none/single/per-AZ), S3 gateway endpoint, flow logs, locked default security group."},
+  "ec2-instance":      {"version": "1.0.0", "status": "active", "category": "Compute",    "description": "EC2 instance with IMDSv2, encrypted gp3 root volume, Session Manager role and a dedicated security group."},
+  "s3-bucket":         {"version": "1.0.0", "status": "active", "category": "Storage",    "description": "Private S3 bucket: public access blocked, owner-enforced, encrypted, TLS-only, versioning and lifecycle rules."},
+  "s3-static-website": {"version": "1.0.0", "status": "active", "category": "Storage",    "description": "Static website: private bucket behind CloudFront (HTTPS, security headers) or a public S3 website endpoint."},
+  "efs":               {"version": "1.0.0", "status": "active", "category": "Storage",    "description": "Encrypted EFS file system with mount targets in every private subnet and backups."},
+  "dynamodb-table":    {"version": "1.0.0", "status": "active", "category": "Database",   "description": "DynamoDB table with encryption, point-in-time recovery, optional TTL and streams. Deletion protection in production."},
+  "eks-cluster":       {"version": "1.0.0", "status": "active", "category": "Kubernetes", "description": "EKS cluster (API auth mode, KMS secrets encryption, control plane logs) with a managed node group and core add-ons."},
+  "alb":               {"version": "1.0.0", "status": "active", "category": "Networking", "description": "Application Load Balancer with HTTP to HTTPS redirect, TLS 1.3 policy and an IP target group."},
+  "route53-zone":      {"version": "1.0.0", "status": "active", "category": "DNS",        "description": "Public or private Route 53 hosted zone."},
+  "acm-certificate":   {"version": "1.0.0", "status": "active", "category": "DNS",        "description": "ACM certificate with automatic Route 53 DNS validation or manual records."}
+}

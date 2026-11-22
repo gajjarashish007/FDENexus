@@ -1,0 +1,8 @@
+# Organization defaults for aws-account. Concrete instances inherit from aws-account/defaults.
+components:
+  terraform:
+    aws-account/defaults:
+      metadata:
+        type: abstract
+        component: aws-account
+      vars: {}

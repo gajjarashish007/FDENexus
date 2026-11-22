@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings · FDE Nexus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="nx-app" id="nx-app" data-page="settings.html" data-title="Settings">
+
+  <div class="nx-page-head"><div><h1>Settings</h1>
+    <p>Your account, appearance, and the planned AI autonomy policy and integrations.</p></div></div>
+  <div class="nx-tab-host">
+    <div class="nx-tabs" data-group="settings">
+      <button class="active" data-tab="profile">Profile</button>
+      <button data-tab="appearance">Appearance</button>
+      <button data-tab="autonomy">AI Autonomy</button>
+      <button data-tab="integrations">Integrations</button>
+    </div>
+
+    <div class="nx-tabpane active" id="pane-profile">
+      <div class="nx-card" style="max-width:640px"><div class="nx-card-body">
+        <div class="row g-3 mb-3">
+          <div class="col-6"><div class="small nx-muted">Username</div><div class="fw-semibold" id="pf-user"></div></div>
+          <div class="col-6"><div class="small nx-muted">Role</div><div class="fw-semibold" id="pf-role"></div></div>
+          <div class="col-12"><div class="small nx-muted">Email</div><div class="fw-semibold" id="pf-email"></div></div>
+        </div>
+        <hr class="nx-hr">
+        <h2 class="h6 fw-bold">Change password</h2>
+        <form id="pf-form" autocomplete="off">
+          <div class="mb-2"><label class="form-label small fw-semibold" for="pf-cur">Current password</label><input class="form-control" id="pf-cur" type="password" autocomplete="current-password"></div>
+          <div class="mb-2"><label class="form-label small fw-semibold" for="pf-new">New password (8+ characters)</label><input class="form-control" id="pf-new" type="password" autocomplete="new-password"></div>
+          <div class="alert d-none py-2 small" id="pf-msg"></div>
+          <button class="btn btn-primary" type="submit">Update password</button>
+        </form>
+      </div></div>
+    </div>
+
+    <div class="nx-tabpane" id="pane-appearance">
+      <div class="nx-card" style="max-width:640px"><div class="nx-card-body">
+        <p class="small nx-muted mb-0">Theme is controlled by the moon/sun button in the header and remembered in your browser.</p>
+      </div></div>
+    </div>
+
+    <div class="nx-tabpane" id="pane-autonomy">
+      <div class="nx-card" style="max-width:720px"><div class="nx-card-head"><i class="bi bi-robot text-primary"></i><h3>AI autonomy ladder</h3></div>
+        <div class="nx-card-body">
+          <p class="small nx-muted">Agents are introduced in steps. The platform launches at A0–A2. A3 is earned per operation; A4 is reserved and kill-switch protected.</p>
+          <div id="nx-autonomy"></div>
+          <div class="alert alert-info py-2 small mt-3 mb-0"><i class="bi bi-shield-check me-1"></i>Agents always act through the same policy checks and approvals as people. Planned for a later module; nothing here changes behavior yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nx-tabpane" id="pane-integrations">
+      <div class="row g-3" id="nx-integrations"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/mock-data.js"></script>
+<script src="js/m01-api.js"></script>
+<script src="js/components.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => setTimeout(() => {
+  const NX = window.NEXUS, s = NX.session.get() || {}, $ = id => document.getElementById(id);
+  if (!$("pf-form")) return;
+  $("pf-user").textContent = s.name || ""; $("pf-role").textContent = s.role || ""; $("pf-email").textContent = s.email || "";
+  $("pf-form").addEventListener("submit", async e => {
+    e.preventDefault(); const m = $("pf-msg");
+    try { await NX.api.post("/api/auth/password", { current: $("pf-cur").value, new: $("pf-new").value });
+      m.className = "alert alert-success py-2 small"; m.textContent = "Password updated."; $("pf-form").reset(); }
+    catch (err) { m.className = "alert alert-danger py-2 small"; m.textContent = err.message; }
+  });
+}, 0));
+</script>
+<script src="js/app.js"></script>
+</body>
+</html>

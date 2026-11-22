@@ -1,0 +1,39 @@
+{
+  "exact": [
+    "applicationautoscaling-chart",
+    "argo-rollouts",
+    "aws-cli",
+    "aws-ebs-csi-driver",
+    "aws-efs-csi-driver",
+    "aws-load-balancer-controller",
+    "aws-node",
+    "datadog-agent",
+    "eks",
+    "eks-pod-identity-agent",
+    "external-secrets",
+    "external-secrets-cert-controller",
+    "external-secrets-webhook",
+    "keda-admission-webhooks",
+    "keda-operator",
+    "keda-operator-metrics-apiserver",
+    "karpenter",
+    "kubernetes-agent",
+    "maxmind-pull",
+    "operator",
+    "prometheus",
+    "splunk-otel-collector"
+  ],
+  "suffixes": [
+    "-chart"
+  ],
+  "prefixes": [
+    "external-secrets"
+  ],
+  "contains": [],
+  "hidden": [
+    "*-chart"
+  ],
+  "hidden_namespaces": [
+    "kube-system"
+  ]
+}

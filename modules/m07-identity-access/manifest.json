@@ -1,0 +1,125 @@
+{
+  "id": "M07",
+  "name": "Identity & Access Management",
+  "group": "Security",
+  "owner": "Identity & Access",
+  "phase": "P2",
+  "icon": "bi-person-lock",
+  "description": "SSO, MFA, least privilege, just-in-time access and access reviews for people and workloads.",
+  "capabilities": [
+    {
+      "id": "sso",
+      "name": "SSO",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "mfa",
+      "name": "MFA",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "saml-and-oidc",
+      "name": "SAML and OIDC",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "scim-provisioning",
+      "name": "SCIM provisioning",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "rbac",
+      "name": "RBAC",
+      "status": "partial",
+      "summary": "Six portal roles enforced by the backend; custom roles not built.",
+      "provided_by": "M01"
+    },
+    {
+      "id": "abac",
+      "name": "ABAC",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "iam-role-management",
+      "name": "IAM role management",
+      "status": "partial",
+      "summary": "Cross-account roles registered per AWS account; instance and node roles created by components.",
+      "provided_by": "M01/M02"
+    },
+    {
+      "id": "just-in-time-access",
+      "name": "Just-in-time access",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "privileged-access-management",
+      "name": "Privileged access management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "temporary-permissions",
+      "name": "Temporary permissions",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "access-expiration",
+      "name": "Access expiration",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "access-reviews",
+      "name": "Access reviews",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "approval-workflows",
+      "name": "Approval workflows",
+      "status": "live",
+      "summary": "Requests and infrastructure changes need an approver; no self-approval.",
+      "provided_by": "M01/M03"
+    },
+    {
+      "id": "automatic-revocation",
+      "name": "Automatic revocation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "service-identities",
+      "name": "Service identities",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "workload-identity",
+      "name": "Workload identity",
+      "status": "partial",
+      "summary": "EKS Pod Identity agent installed on every cluster.",
+      "provided_by": "M02"
+    },
+    {
+      "id": "session-auditing",
+      "name": "Session auditing",
+      "status": "partial",
+      "summary": "Logins, failures and every change are in the audit log.",
+      "provided_by": "M01"
+    }
+  ],
+  "enabled": true,
+  "design": {
+    "principles": [
+      "least privilege",
+      "separation of duties"
+    ]
+  }
+}

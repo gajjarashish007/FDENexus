@@ -1,0 +1,8 @@
+# Organization defaults for route53-zone. Concrete instances inherit from route53-zone/defaults.
+components:
+  terraform:
+    route53-zone/defaults:
+      metadata:
+        type: abstract
+        component: route53-zone
+      vars: {}

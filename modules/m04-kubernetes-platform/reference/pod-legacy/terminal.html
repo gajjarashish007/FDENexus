@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terminal GUI</title>
+    <style>
+        body { background: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; margin: 0; }
+        .terminal { background: #0d1117; padding: 20px; height: 500px; overflow-y: auto; border: 1px solid #30363d; border-radius: 8px; }
+        .input-line { display: flex; margin-top: 10px; }
+        .prompt { color: #7ce38b; margin-right: 10px; }
+        input { background: transparent; border: none; color: #c9d1d9; font-family: inherit; flex: 1; outline: none; }
+        .output { margin: 5px 0; white-space: pre-wrap; }
+        .pod-controls { margin-bottom: 20px; padding: 15px; background: #21262d; border-radius: 8px; }
+        .pod-input { background: #0d1117; border: 1px solid #30363d; padding: 8px; margin-right: 10px; color: #c9d1d9; }
+        .btn { background: #238636; border: none; padding: 8px 16px; color: white; cursor: pointer; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h2>💻 Terminal GUI</h2>
+    
+    <div class="pod-controls">
+        <input type="text" id="pod-name" placeholder="Pod name" class="pod-input">
+        <input type="text" id="namespace" placeholder="Namespace" class="pod-input">
+        <button onclick="connectToPod()" class="btn">Connect</button>
+        <button onclick="disconnectFromPod()" class="btn">Disconnect</button>
+    </div>
+    
+    <div class="terminal" id="terminal">
+        <div class="input-line">
+            <span class="prompt">$</span>
+            <input type="text" id="command-input" placeholder="Enter command..." autofocus>
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const commandInput = document.getElementById('command-input');
+        
+        function addOutput(text) {
+            const div = document.createElement('div');
+            div.className = 'output';
+            div.textContent = text;
+            
+            const inputLine = terminal.querySelector('.input-line');
+            terminal.insertBefore(div, inputLine);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        const commands = {
+            'pod-list': () => `Available Pods:
+web-server-pod       Running    10.0.1.10
+database-pod         Running    10.0.1.11
+cache-pod            Running    10.0.1.12
+worker-pod           Pending    10.0.1.13`,
+            
+            help: () => `Available commands:
+help - show this help
+pod-list - list available pods
+clear - clear terminal`,
+            
+            clear: () => {
+                const outputs = terminal.querySelectorAll('.output');
+                outputs.forEach(output => output.remove());
+                return '';
+            }
+        };
+        
+        commandInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const input = commandInput.value.trim();
+                if (input) {
+                    addOutput(`$ ${input}`);
+                    
+                    if (commands[input]) {
+                        const result = commands[input]();
+                        if (result) addOutput(result);
+                    } else {
+                        addOutput(`${input}: command not found`);
+                    }
+                }
+                commandInput.value = '';
+            }
+        });
+        
+        function connectToPod() {
+            const podName = document.getElementById('pod-name').value.trim();
+            if (!podName) {
+                addOutput('Error: Pod name required');
+                return;
+            }
+            addOutput(`Connected to pod: ${podName}`);
+        }
+        
+        function disconnectFromPod() {
+            addOutput('Disconnected from pod');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+POD_AUTH_USER=admin
+POD_RBAC_DB=data/rbac.db

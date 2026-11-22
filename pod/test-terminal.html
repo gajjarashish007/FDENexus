@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terminal Test</title>
+    <style>
+        body { background: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
+        .terminal { background: #0d1117; padding: 20px; height: 400px; overflow-y: auto; border: 1px solid #30363d; }
+        .input-line { display: flex; margin-top: 10px; }
+        .prompt { color: #7ce38b; margin-right: 10px; }
+        input { background: transparent; border: none; color: #c9d1d9; font-family: inherit; flex: 1; outline: none; }
+        .output { margin: 5px 0; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="terminal" id="terminal">
+        <div class="input-line">
+            <span class="prompt">$</span>
+            <input type="text" id="command-input" placeholder="Enter command..." autofocus>
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const commandInput = document.getElementById('command-input');
+
+        function addOutput(text) {
+            const div = document.createElement('div');
+            div.className = 'output';
+            div.textContent = text;
+            
+            const inputLine = terminal.querySelector('.input-line');
+            terminal.insertBefore(div, inputLine);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        const commands = {
+            help: () => 'Available commands: help, ls, pwd, clear',
+            ls: () => 'file1.txt  file2.txt  folder1/',
+            pwd: () => '/home/user',
+            clear: () => {
+                const outputs = terminal.querySelectorAll('.output');
+                outputs.forEach(output => output.remove());
+                return '';
+            }
+        };
+
+        commandInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const input = commandInput.value.trim();
+                if (input) {
+                    addOutput(`$ ${input}`);
+                    
+                    if (commands[input]) {
+                        const result = commands[input]();
+                        if (result) addOutput(result);
+                    } else {
+                        addOutput(`${input}: command not found`);
+                    }
+                }
+                commandInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

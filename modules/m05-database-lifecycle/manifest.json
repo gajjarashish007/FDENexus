@@ -1,0 +1,174 @@
+{
+  "id": "M05",
+  "name": "Database Lifecycle & Management",
+  "group": "Data",
+  "owner": "Data Platform",
+  "phase": "P2",
+  "icon": "bi-database",
+  "description": "Provision, protect, tune and retire relational, NoSQL, cache, search, warehouse and streaming databases.",
+  "capabilities": [
+    {
+      "id": "database-catalog",
+      "name": "Database catalog",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "database-provisioning",
+      "name": "Database provisioning",
+      "status": "partial",
+      "summary": "DynamoDB tables through M02/M03. Other engines not built yet.",
+      "provided_by": "M02"
+    },
+    {
+      "id": "instance-and-cluster-configuration",
+      "name": "Instance and cluster configuration",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "database-version-management",
+      "name": "Database version management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "schema-management",
+      "name": "Schema management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "database-user-and-role-management",
+      "name": "Database user and role management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "credential-rotation",
+      "name": "Credential rotation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "encryption",
+      "name": "Encryption",
+      "status": "partial",
+      "summary": "DynamoDB server-side encryption always on.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "backup-and-restore",
+      "name": "Backup and restore",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "point-in-time-recovery",
+      "name": "Point-in-time recovery",
+      "status": "partial",
+      "summary": "DynamoDB PITR on by default; required in production by policy FDE-009.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "replication",
+      "name": "Replication",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "high-availability",
+      "name": "High availability",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "failover",
+      "name": "Failover",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "performance-monitoring",
+      "name": "Performance monitoring",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "query-analysis",
+      "name": "Query analysis",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "index-recommendations",
+      "name": "Index recommendations",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "capacity-forecasting",
+      "name": "Capacity forecasting",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "database-patching",
+      "name": "Database patching",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "database-upgrades",
+      "name": "Database upgrades",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "database-migration",
+      "name": "Database migration",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-archival",
+      "name": "Data archival",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "secure-decommissioning",
+      "name": "Secure decommissioning",
+      "status": "partial",
+      "summary": "DynamoDB deletion protection in production; destroy needs approval.",
+      "provided_by": "M02"
+    }
+  ],
+  "enabled": true,
+  "design": {
+    "categories": {
+      "relational": [
+        "Aurora PostgreSQL/MySQL",
+        "RDS PostgreSQL/MySQL"
+      ],
+      "nosql": [
+        "DynamoDB",
+        "DocumentDB"
+      ],
+      "cache": [
+        "ElastiCache Valkey/Redis",
+        "MemoryDB"
+      ],
+      "search": [
+        "OpenSearch"
+      ],
+      "warehouse": [
+        "Redshift Serverless"
+      ],
+      "streaming": [
+        "MSK (Kafka)",
+        "Kinesis Data Streams"
+      ]
+    }
+  }
+}

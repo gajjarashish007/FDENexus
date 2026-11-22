@@ -1,0 +1,92 @@
+{
+  "id": "M13",
+  "name": "Deployment & Change Management",
+  "group": "Delivery",
+  "owner": "Release Management",
+  "phase": "P2",
+  "icon": "bi-arrow-repeat",
+  "description": "Change requests, risk, approvals, windows, pipelines, verification and rollback.",
+  "capabilities": [
+    {
+      "id": "ci-cd-integrations",
+      "name": "CI/CD integrations",
+      "status": "partial",
+      "summary": "GitLab merge requests and a CI pipeline template.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "change-requests",
+      "name": "Change requests",
+      "status": "live",
+      "summary": "Every infrastructure change is a tracked change request.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "approval-workflows",
+      "name": "Approval workflows",
+      "status": "live",
+      "summary": "Auto-approve low-risk non-production; humans approve the rest.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "risk-classification",
+      "name": "Risk classification",
+      "status": "live",
+      "summary": "Low/medium/high from tier, operation and policy warnings.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "deployment-windows",
+      "name": "Deployment windows",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "scheduling",
+      "name": "Scheduling",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "pipeline-execution",
+      "name": "Pipeline execution",
+      "status": "partial",
+      "summary": "GitLab CI validate/plan/apply; production apply is manual.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "deployment-verification",
+      "name": "Deployment verification",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "rollback",
+      "name": "Rollback",
+      "status": "live",
+      "summary": "Roll back to a previous stack version.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "change-history",
+      "name": "Change history",
+      "status": "live",
+      "summary": "Stack versions and change log per environment.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "conflict-detection",
+      "name": "Conflict detection",
+      "status": "live",
+      "summary": "Concurrent edits to the same component are detected; one open MR per environment.",
+      "provided_by": "M03"
+    },
+    {
+      "id": "release-management",
+      "name": "Release management",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": true
+}

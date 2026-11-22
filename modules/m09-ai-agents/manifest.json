@@ -1,0 +1,130 @@
+{
+  "id": "M09",
+  "name": "AI Engineering & Multi-Agent Platform",
+  "group": "AI",
+  "owner": "AI Platform",
+  "phase": "P2",
+  "icon": "bi-robot",
+  "description": "Specialist agents behind a model gateway, with tool authorization, human approval and tracing.",
+  "capabilities": [
+    {
+      "id": "agent-orchestration",
+      "name": "Agent orchestration",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "model-gateway",
+      "name": "Model gateway",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "model-selection",
+      "name": "Model selection",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "prompt-versioning",
+      "name": "Prompt versioning",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "retrieval-augmented-generation",
+      "name": "Retrieval-augmented generation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "knowledge-base",
+      "name": "Knowledge base",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "vector-database",
+      "name": "Vector database",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "agent-memory-boundaries",
+      "name": "Agent memory boundaries",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "tool-registry",
+      "name": "Tool registry",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "tool-authorization",
+      "name": "Tool authorization",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "human-approval",
+      "name": "Human approval",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "agent-evaluation",
+      "name": "Agent evaluation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "hallucination-controls",
+      "name": "Hallucination controls",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "prompt-injection-protection",
+      "name": "Prompt injection protection",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "data-leakage-prevention",
+      "name": "Data leakage prevention",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "execution-tracing",
+      "name": "Execution tracing",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "cost-monitoring",
+      "name": "Cost monitoring",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": false,
+  "design": {
+    "agents": [
+      "Infrastructure architecture",
+      "Infrastructure provisioning",
+      "Terraform generation",
+      "Kubernetes troubleshooting",
+      "Database operations",
+      "Security analysis",
+      "Data governance",
+      "FinOps",
+      "Incident management",
+      "Observability",
+      "Documentation and knowledge retrieval"
+    ],
+    "guardrail": "Agents call the same APIs as people. They cannot bypass authorization, policy checks or production approvals."
+  }
+}

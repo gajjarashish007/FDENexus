@@ -1,0 +1,8 @@
+# Organization defaults for account-baseline. Concrete instances inherit from account-baseline/defaults.
+components:
+  terraform:
+    account-baseline/defaults:
+      metadata:
+        type: abstract
+        component: account-baseline
+      vars: {}

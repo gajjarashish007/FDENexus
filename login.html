@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · FDE Nexus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<!-- data-public=1 marks this page as not requiring a session -->
+<body data-public="1" class="nx-auth-body">
+  <div class="nx-auth">
+    <div class="nx-auth-brand">
+      <div class="nx-auth-panel">
+        <span class="nx-logo" style="width:46px;height:46px;font-size:22px">N</span>
+        <h1>FDE Nexus</h1>
+        <p class="lead">Cloud engineering, self-service and operations, in one governed portal.</p>
+        <ul class="nx-auth-points">
+          <li><i class="bi bi-chat-left-text"></i> Describe a requirement, get a YAML manifest</li>
+          <li><i class="bi bi-ui-checks-grid"></i> Build infrastructure from a guided form</li>
+          <li><i class="bi bi-slack"></i> Slack-to-PR and GitHub Actions flow</li>
+          <li><i class="bi bi-boxes"></i> EKS operations and troubleshooting</li>
+          <li><i class="bi bi-shield-lock"></i> RBAC, approvals and an audit trail</li>
+        </ul>
+        <p class="small opacity-75 mb-0">Open-source stack: Terraform, Atmos, Kubernetes, GitHub Actions, Argo CD, Slack, AWS.</p>
+      </div>
+    </div>
+
+    <div class="nx-auth-form">
+      <div class="nx-auth-card">
+        <h2 class="h4 fw-bold mb-1" id="lg-title">Sign in</h2>
+        <p class="nx-muted small mb-4" id="lg-sub">Use your portal account. New users can request access; an administrator approves it.</p>
+
+        <div id="lg-alert" class="alert d-none py-2 small" role="alert"></div>
+
+        <form id="nx-login-form" novalidate>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold" for="lg-user">Username</label>
+            <div class="input-group"><span class="input-group-text"><i class="bi bi-person"></i></span>
+              <input class="form-control" id="lg-user" autocomplete="username" required></div>
+          </div>
+          <div class="mb-3 d-none" id="lg-email-wrap">
+            <label class="form-label small fw-semibold" for="lg-email">Email</label>
+            <div class="input-group"><span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input class="form-control" id="lg-email" type="email" autocomplete="email"></div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label small fw-semibold" for="lg-pass">Password</label>
+            <div class="input-group"><span class="input-group-text"><i class="bi bi-lock"></i></span>
+              <input class="form-control" id="lg-pass" type="password" autocomplete="current-password" required>
+              <button class="btn btn-outline-secondary" type="button" id="lg-show" aria-label="Show password"><i class="bi bi-eye"></i></button></div>
+          </div>
+          <button class="btn btn-primary w-100" type="submit" id="lg-submit"><i class="bi bi-box-arrow-in-right me-1"></i><span>Sign in</span></button>
+          <button class="btn btn-link w-100 mt-2" type="button" id="lg-toggle">Request access</button>
+        </form>
+
+        <p class="nx-muted small text-center mt-4 mb-0" id="lg-backend">Checking backend…</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/mock-data.js"></script>
+<script src="js/m01-api.js"></script>
+  <script>
+    (function () {
+      const $ = id => document.getElementById(id);
+      const NX = window.NEXUS;
+      document.documentElement.setAttribute("data-theme", localStorage.getItem("nx-theme") || "light");
+      try { const s = JSON.parse(localStorage.getItem("nx-session") || "null"); if (s && s.token) location.replace("index.html"); } catch (e) {}
+
+      let signup = false;
+      function alertBox(msg, tone) {
+        const a = $("lg-alert"); a.className = "alert py-2 small alert-" + tone; a.textContent = msg;
+      }
+      function setMode(on) {
+        signup = on;
+        $("lg-title").textContent = on ? "Request access" : "Sign in";
+        $("lg-email-wrap").classList.toggle("d-none", !on);
+        $("lg-submit").querySelector("span").textContent = on ? "Submit request" : "Sign in";
+        $("lg-toggle").textContent = on ? "Back to sign in" : "Request access";
+        $("lg-pass").autocomplete = on ? "new-password" : "current-password";
+        $("lg-alert").className = "alert d-none";
+      }
+      $("lg-toggle").addEventListener("click", () => setMode(!signup));
+      $("lg-show").addEventListener("click", function () {
+        const p = $("lg-pass");
+        p.type = p.type === "password" ? "text" : "password";
+        this.querySelector("i").className = p.type === "password" ? "bi bi-eye" : "bi bi-eye-slash";
+      });
+
+      NX.api.health().then(h => {
+        $("lg-backend").textContent = "Backend connected" + (h.demo ? " (simulated deployments)" : "");
+      }).catch(() => {
+        $("lg-backend").textContent = "Backend not reachable at " + NX.api.base() + ". Run ./start-portal.sh";
+      });
+
+      $("nx-login-form").addEventListener("submit", async e => {
+        e.preventDefault();
+        const user = $("lg-user").value.trim(), pass = $("lg-pass").value;
+        if (!user || !pass) return alertBox("Enter a username and password.", "warning");
+        const btn = $("lg-submit"); btn.disabled = true;
+        try {
+          if (signup) {
+            const r = await NX.api.signup(user, $("lg-email").value.trim(), pass);
+            alertBox(r.message, "success"); setMode(true);
+          } else {
+            const r = await NX.api.login(user, pass);
+            const u = r.user;
+            localStorage.setItem("nx-session", JSON.stringify({
+              token: r.token, name: u.username, email: u.email, role: u.role, roleName: u.role, ts: Date.now() }));
+            location.href = "index.html";
+          }
+        } catch (err) { alertBox(err.message, "danger"); }
+        btn.disabled = false;
+      });
+    })();
+  </script>
+</body>
+</html>

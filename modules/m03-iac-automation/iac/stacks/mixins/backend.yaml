@@ -1,0 +1,9 @@
+# Remote state: S3 with native lock files (Terraform >= 1.10). No DynamoDB lock table needed.
+# The portal fills bucket and region per environment.
+terraform:
+  backend_type: s3
+  backend:
+    s3:
+      encrypt: true
+      use_lockfile: true
+      key: "terraform.tfstate"

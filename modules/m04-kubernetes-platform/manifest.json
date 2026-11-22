@@ -1,0 +1,118 @@
+{
+  "id": "M04",
+  "name": "Kubernetes & Container Platform Management",
+  "group": "Infrastructure",
+  "owner": "Container Platform",
+  "phase": "P1-P2",
+  "icon": "bi-boxes",
+  "description": "Operate EKS and other clusters: health, pods, workloads, nodes, logs, diagnosis and audited actions.",
+  "capabilities": [
+    {
+      "id": "cluster-lifecycle",
+      "name": "Cluster lifecycle",
+      "status": "live",
+      "summary": "Create (Launch \u2192 EKS), register existing EKS or kubeconfig clusters, connection test, control-plane details, delete through a reviewed Terraform destroy.",
+      "where": "kubernetes.html?tab=cluster"
+    },
+    {
+      "id": "node-pool-management",
+      "name": "Node pool management",
+      "status": "live",
+      "summary": "Managed node groups with scaling, version and health; scale and upgrade (Terraform change for portal clusters, EKS API otherwise); cordon, uncordon and drain nodes.",
+      "where": "kubernetes.html?tab=cluster"
+    },
+    {
+      "id": "autoscaling",
+      "name": "Autoscaling",
+      "status": "live",
+      "summary": "Create HPAs (CPU and memory targets, scale-down stabilization), change min/max, delete; current vs target metrics with an at-max flag.",
+      "where": "kubernetes.html?tab=config"
+    },
+    {
+      "id": "workload-deployment",
+      "name": "Workload deployment",
+      "status": "live",
+      "summary": "Deploy an app from an image (Deployment, Service, PDB, probes, non-root) or apply YAML, both with a server-side dry run and diff; restart, scale, change image, history and roll back, delete.",
+      "where": "kubernetes.html?tab=workloads"
+    },
+    {
+      "id": "namespace-management",
+      "name": "Namespace management",
+      "status": "live",
+      "summary": "Create namespaces with team label, Pod Security level, quota, default limits and default-deny network policy; list with pod counts; delete with typed confirmation.",
+      "where": "kubernetes.html?tab=namespaces"
+    },
+    {
+      "id": "rbac",
+      "name": "RBAC",
+      "status": "live",
+      "summary": "Grant view/edit/admin in a namespace to a group, user or service account; list and remove role bindings; cluster-wide bindings read-only. Portal roles decide who may do what.",
+      "where": "kubernetes.html?tab=access"
+    },
+    {
+      "id": "network-policies",
+      "name": "Network policies",
+      "status": "live",
+      "summary": "Default-deny, allow same namespace, allow from a namespace, allow a port; list, describe and delete.",
+      "where": "kubernetes.html?tab=network"
+    },
+    {
+      "id": "ingress-management",
+      "name": "Ingress management",
+      "status": "live",
+      "summary": "Create ingresses (AWS Load Balancer Controller annotations, ACM certificate, internal or internet-facing), list with addresses and TLS, describe, delete.",
+      "where": "kubernetes.html?tab=network"
+    },
+    {
+      "id": "storage-and-pvc-lifecycle",
+      "name": "Storage and PVC lifecycle",
+      "status": "live",
+      "summary": "Create and delete PVCs, storage classes (default, type, expansion), persistent volumes and their claims.",
+      "where": "kubernetes.html?tab=storage"
+    },
+    {
+      "id": "container-image-scanning",
+      "name": "Container image scanning",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "resource-quotas",
+      "name": "Resource quotas",
+      "status": "live",
+      "summary": "Set quotas per namespace (CPU, memory, storage, object counts), view usage against limits, delete.",
+      "where": "kubernetes.html?tab=config"
+    },
+    {
+      "id": "pod-health",
+      "name": "Pod health",
+      "status": "live",
+      "summary": "Pod status rules match kubectl, problem-pod list, diagnosis hints (OOMKilled, crash loop, image pull, config errors, readiness), logs with previous container, failed-pod cleanup.",
+      "where": "kubernetes.html?tab=pods"
+    },
+    {
+      "id": "scheduling-analysis",
+      "name": "Scheduling analysis",
+      "status": "live",
+      "summary": "Pending pods are explained from FailedScheduling events: insufficient CPU/memory, taints/affinity, unbound PVCs.",
+      "where": "kubernetes.html?tab=pods"
+    },
+    {
+      "id": "kubernetes-upgrades",
+      "name": "Kubernetes upgrades",
+      "status": "live",
+      "summary": "EKS upgrade insights, version skew, one-minor-step control-plane upgrade (Terraform change or EKS API), node group upgrade, add-on updates to the latest compatible version.",
+      "where": "kubernetes.html?tab=cluster"
+    },
+    {
+      "id": "cluster-backup-and-recovery",
+      "name": "Cluster backup and recovery",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": true,
+  "ui": {
+    "workspace": "kubernetes.html"
+  }
+}

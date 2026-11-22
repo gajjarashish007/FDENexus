@@ -1,0 +1,8 @@
+# Organization defaults for vpc. Concrete instances inherit from vpc/defaults.
+components:
+  terraform:
+    vpc/defaults:
+      metadata:
+        type: abstract
+        component: vpc
+      vars: {}

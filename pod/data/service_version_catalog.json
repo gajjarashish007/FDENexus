@@ -1,0 +1,626 @@
+{
+  "environments": [
+    { "id": "goldendev", "label": "GOLDENDEV" },
+    { "id": "goldendev2", "label": "GOLDENDEV2" },
+    { "id": "partnercat", "label": "PARTNERCAT" },
+    { "id": "comcast", "label": "COMCAST" }
+  ],
+  "defaults": {
+    "defaultEnvironment": "comcast",
+    "httpScheme": "https",
+    "hostnameTemplate": "{service}.{environment}.arlocloud.com",
+    "versionPathTemplate": "/{service}/internal/config"
+  },
+  "services": [
+    {
+      "id": "advisor",
+      "name": "Advisor",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://advisor.goldendev.arlocloud.com/advisor/internal/config",
+        "goldendev2": "https://advisor.goldendev2.arlocloud.com/advisor/internal/config",
+        "partnercat": "https://advisor.partnercat.arlocloud.com/advisor/internal/config",
+        "comcast": "https://advisor.comcast.arlocloud.com/advisor/internal/config"
+      }
+    },
+    {
+      "id": "oauth",
+      "name": "OAuth",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://oauth.goldendev.arlo.com/oauth/internal/config",
+        "goldendev2": "https://oauth.goldendev2.arlo.com/oauth/internal/config",
+        "partnercat": "https://oauth.partnercat.arlo.com/oauth/internal/config",
+        "comcast": "https://oauth.6a5cc08e4a58.arlo.com/oauth/internal/config"
+      }
+    },
+    {
+      "id": "oauth-proxy",
+      "name": "OAuth Proxy",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://api.goldendev.arlo.com/oauth-proxy/internal/config",
+        "goldendev2": "https://api.goldendev2.arlo.com/oauth-proxy/internal/config",
+        "partnercat": "https://api.partnercat.arlo.com/oauth-proxy/internal/config",
+        "comcast": "https://api.6a5cc08e4a58.arlo.com/oauth-proxy/internal/config"
+      }
+    },
+    {
+      "id": "oauth-proxy-staging",
+      "name": "OAuth Proxy Staging",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://api-staging.goldendev.arlo.com/oauth-proxy/internal/config",
+        "goldendev2": "https://api-staging.goldendev2.arlo.com/oauth-proxy/internal/config",
+        "partnercat": "https://api-staging.partnercat.arlo.com/oauth-proxy/internal/config",
+        "comcast": "https://api-staging.6a5cc08e4a58.arlo.com/oauth-proxy/internal/config"
+      }
+    },
+    {
+      "id": "oc-accounts-service",
+      "name": "OC Accounts Service",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://oc-accounts.goldendev.arlocloud.com/oc-accounts-service/status",
+        "goldendev2": "https://oc-accounts.goldendev2.arlocloud.com/oc-accounts-service/status",
+        "partnercat": "https://oc-accounts.partnercat.arlocloud.com/oc-accounts-service/status",
+        "comcast": "https://oc-accounts.comcast.arlocloud.com/oc-accounts-service/status"
+      }
+    },
+    {
+      "id": "broker-service",
+      "name": "Broker Service",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://broker-service.goldendev.arlocloud.com/broker-service/internal/config",
+        "goldendev2": "https://broker-service.goldendev2.arlocloud.com/broker-service/internal/config",
+        "partnercat": "https://broker-service.partnercat.arlocloud.com/broker-service/internal/config",
+        "comcast": "https://broker-service.comcast.arlocloud.com/broker-service/internal/config"
+      }
+    },
+    {
+      "id": "arlosafelocations",
+      "name": "Safe Locations",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://safelocations.goldendev.arlocloud.com/version",
+        "goldendev2": "http://safelocations.goldendev2.arlocloud.com/version",
+        "partnercat": "http://safelocations.partnercat.arlocloud.com/version",
+        "comcast": "http://safelocations.comcast.arlocloud.com/version"
+      }
+    },
+    {
+      "id": "arloautomation-leader",
+      "name": "Automation Leader",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://arloautomation-leader.goldendev.arlocloud.com/automation/version",
+        "goldendev2": "https://arloautomation-leader.goldendev2.arlocloud.com/automation/version",
+        "partnercat": "https://arloautomation-leader.partnercat.arlocloud.com/automation/version",
+        "comcast": "https://arloautomation-leader.comcast.arlocloud.com/automation/version"
+      }
+    },
+    {
+      "id": "hmsautomation",
+      "name": "HMS Automation",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://arloautomation.goldendev.arlocloud.com/automation/version",
+        "goldendev2": "https://arloautomation.goldendev2.arlocloud.com/automation/version",
+        "partnercat": "https://arloautomation.partnercat.arlocloud.com/automation/version",
+        "comcast": "https://arloautomation.comcast.arlocloud.com/automation/version"
+      }
+    },
+    {
+      "id": "hmsautomation-scheduler",
+      "name": "Automation Scheduler",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://arloautomation-scheduler.goldendev.arlocloud.com/automation/version",
+        "goldendev2": "https://arloautomation-scheduler.goldendev2.arlocloud.com/automation/version",
+        "partnercat": "https://arloautomation-scheduler.partnercat.arlocloud.com/automation/version",
+        "comcast": "https://arloautomation-scheduler.comcast.arlocloud.com/automation/version"
+      }
+    },
+    {
+      "id": "hmsautomation-job",
+      "name": "Automation Job",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://arloautomation-job.goldendev.arlocloud.com/automation/version",
+        "goldendev2": "https://arloautomation-job.goldendev2.arlocloud.com/automation/version",
+        "partnercat": "https://arloautomation-job.partnercat.arlocloud.com/automation/version",
+        "comcast": "https://arloautomation-job.comcast.arlocloud.com/automation/version"
+      }
+    },
+    {
+      "id": "backend-hmsautomation",
+      "name": "Backend HMS Automation",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://arloautomation.goldendev.arlocloud.com/automation/version",
+        "goldendev2": "https://arloautomation.goldendev2.arlocloud.com/automation/version",
+        "partnercat": "https://arloautomation.partnercat.arlocloud.com/automation/version",
+        "comcast": "https://arloautomation.comcast.arlocloud.com/automation/version"
+      }
+    },
+    {
+      "id": "backend-hmsautomation-job",
+      "name": "Backend Automation Job",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://arloautomation-job.goldendev.arlocloud.com/automation/version",
+        "goldendev2": "https://arloautomation-job.goldendev2.arlocloud.com/automation/version",
+        "partnercat": "https://arloautomation-job.partnercat.arlocloud.com/automation/version",
+        "comcast": "https://arloautomation-job.comcast.arlocloud.com/automation/version"
+      }
+    },
+    {
+      "id": "device-authentication",
+      "name": "Device Authentication",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://device-authentication.goldendev.arlocloud.com/device-authentication/internal/config",
+        "goldendev2": "https://device-authentication.goldendev2.arlocloud.com/device-authentication/internal/config",
+        "partnercat": "https://device-authentication.partnercat.arlocloud.com/device-authentication/internal/config",
+        "comcast": "https://device-authentication.comcast.arlocloud.com/device-authentication/internal/config"
+      }
+    },
+    {
+      "id": "directory",
+      "name": "Directory",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://directory.goldendev.arlocloud.com/directory/internal/config",
+        "goldendev2": "https://directory.goldendev2.arlocloud.com/directory/internal/config",
+        "partnercat": "https://directory.partnercat.arlocloud.com/directory/internal/config",
+        "comcast": "https://directory.comcast.arlocloud.com/directory/internal/config"
+      }
+    },
+    {
+      "id": "discovery",
+      "name": "Discovery",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://discovery.goldendev.arlocloud.com/discovery/internal/config",
+        "goldendev2": "https://discovery.goldendev2.arlocloud.com/discovery/internal/config",
+        "partnercat": "https://discovery.partnercat.arlocloud.com/discovery/internal/config",
+        "comcast": "https://discovery.comcast.arlocloud.com/discovery/internal/config"
+      }
+    },
+    {
+      "id": "geolocation",
+      "name": "Geolocation",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://geolocation.goldendev.arlocloud.com/geolocation/internal/config",
+        "goldendev2": "https://geolocation.goldendev2.arlocloud.com/geolocation/internal/config",
+        "partnercat": "https://geolocation.partnercat.arlocloud.com/geolocation/internal/config",
+        "comcast": "https://geolocation.comcast.arlocloud.com/geolocation/internal/config"
+      }
+    },
+    {
+      "id": "history",
+      "name": "History",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://history.goldendev.arlocloud.com/history/internal/config",
+        "goldendev2": "https://history.goldendev2.arlocloud.com/history/internal/config",
+        "partnercat": "https://history.partnercat.arlocloud.com/history/internal/config",
+        "comcast": "https://history.comcast.arlocloud.com/history/internal/config"
+      }
+    },
+    {
+      "id": "hmsam",
+      "name": "HMS AM",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://hmsam.goldendev.arlocloud.com/hmsam/version",
+        "goldendev2": "https://hmsam.goldendev2.arlocloud.com/hmsam/version",
+        "partnercat": "https://hmsam.partnercat.arlocloud.com/hmsam/version",
+        "comcast": "https://hmsam.comcast.arlocloud.com/hmsam/version"
+      }
+    },
+    {
+      "id": "hmsapi",
+      "name": "HMS API",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://hmsapi.goldendev.arlocloud.com/hmsapi/version",
+        "goldendev2": "https://hmsapi.goldendev2.arlocloud.com/hmsapi/version",
+        "partnercat": "https://hmsapi.partnercat.arlocloud.com/hmsapi/version",
+        "comcast": "https://hmsapi.comcast.arlocloud.com/hmsapi/version"
+      }
+    },
+    {
+      "id": "hmsdeviceevent",
+      "name": "HMS Device Event",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsdeviceevents.goldendev.arlocloud.com/hmsdeviceevent/version",
+        "goldendev2": "http://hmsdeviceevents.goldendev2.arlocloud.com/hmsdeviceevent/version",
+        "partnercat": "http://hmsdeviceevents.partnercat.arlocloud.com/hmsdeviceevent/version",
+        "comcast": "https://deviceapi.6a5cc08e4a58.messaging.arlo.com/hmsdeviceevent/version"
+      }
+    },
+    {
+      "id": "hmsclientauth",
+      "name": "HMS Client Auth",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://myapi.goldendev.arlo.com/hmsclientauth/version",
+        "goldendev2": "https://myapi.goldendev2.arlo.com/hmsclientauth/version",
+        "partnercat": "https://myapi.partnercat.arlo.com/hmsclientauth/version",
+        "comcast": "https://myapi.6a5cc08e4a58.arlo.com/hmsclientauth/version"
+      }
+    },
+    {
+      "id": "hmscsapi",
+      "name": "HMS CS API",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://myapi.goldendev.arlo.com/hmscsapi/version",
+        "goldendev2": "https://myapi.goldendev2.arlo.com/hmscsapi/version",
+        "partnercat": "https://myapi.partnercat.arlo.com/hmscsapi/version",
+        "comcast": "https://myapi.6a5cc08e4a58.arlo.com/hmscsapi/version"
+      }
+    },
+    {
+      "id": "hmscspubsub",
+      "name": "HMS CS PubSub",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://myapi.goldendev.arlo.com/hmscspubsub/version",
+        "goldendev2": "https://myapi.goldendev2.arlo.com/hmscspubsub/version",
+        "partnercat": "https://myapi.partnercat.arlo.com/hmscspubsub/version",
+        "comcast": "https://myapi.6a5cc08e4a58.arlo.com/hmscspubsub/version"
+      }
+    },
+    {
+      "id": "hmsalexaapi",
+      "name": "HMS Alexa API",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://alexaapi.goldendev.arlocloud.com/hmsalexaapi/version",
+        "goldendev2": "https://alexaapi.goldendev2.arlocloud.com/hmsalexaapi/version",
+        "partnercat": "http://alexaapi.partnercat.arlocloud.com/hmsalexaapi/version",
+        "comcast": "https://alexaapi.comcast.arlocloud.com/hmsalexaapi/version"
+      }
+    },
+    {
+      "id": "hmsgoogleapi",
+      "name": "HMS Google API",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://googleapi.goldendev.arlocloud.com/hmsgoogleapi/version",
+        "goldendev2": "http://googleapi.goldendev2.arlocloud.com/hmsgoogleapi/version",
+        "partnercat": "http://googleapi.partnercat.arlocloud.com/hmsgoogleapi/version",
+        "comcast": "http://googleapi.comcast.arlocloud.com/hmsgoogleapi/version"
+      }
+    },
+    {
+      "id": "hmsdeviceshadow",
+      "name": "HMS Device Shadow",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsdeviceshadow.goldendev.arlocloud.com/hmsdeviceshadow/version",
+        "goldendev2": "http://hmsdeviceshadow.goldendev2.arlocloud.com/hmsdeviceshadow/version",
+        "partnercat": "http://hmsdeviceshadow.partnercat.arlocloud.com/hmsdeviceshadow/version",
+        "comcast": "http://hmsdeviceshadow.comcast.arlocloud.com/hmsdeviceshadow/version"
+      }
+    },
+    {
+      "id": "hmsentityauth",
+      "name": "HMS Entity Auth",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsentityauth.goldendev.arlocloud.com/version",
+        "goldendev2": "http://hmsentityauth.goldendev2.arlocloud.com/version",
+        "partnercat": "http://hmsentityauth.partnercat.arlocloud.com/version",
+        "comcast": "http://hmsentityauth.comcast.arlocloud.com/version"
+      }
+    },
+    {
+      "id": "hmsdevicemanagement",
+      "name": "HMS Device Management",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsentityauth.goldendev.arlocloud.com/version",
+        "goldendev2": "http://hmsentityauth.goldendev2.arlocloud.com/version",
+        "partnercat": "http://hmsentityauth.partnercat.arlocloud.com/version",
+        "comcast": "http://hmsentityauth.comcast.arlocloud.com/version"
+      }
+    },
+    {
+      "id": "hmsguard",
+      "name": "HMS Guard",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsguard.goldendev.arlocloud.com/hmsguard/version",
+        "goldendev2": "http://hmsguard.goldendev2.arlocloud.com/hmsguard/version",
+        "partnercat": "http://hmsguard.partnercat.arlocloud.com/hmsguard/version",
+        "comcast": "https://myapi.6a5cc08e4a58.arlo.com/hmsguard/version"
+      }
+    },
+    {
+      "id": "hmsreportingservice",
+      "name": "HMS Reporting Service",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsreportingservice.goldendev.arlocloud.com/version",
+        "goldendev2": "http://hmsreportingservice.goldendev2.arlocloud.com/version",
+        "partnercat": "http://hmsreportingservice.partnercat.arlocloud.com/version",
+        "comcast": "http://hmsreportingservice.comcast.arlocloud.com/version"
+      }
+    },
+    {
+      "id": "hmsvideoverification",
+      "name": "HMS Video Verification",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://hmsvideoverification.goldendev.arlocloud.com/videoverification/version",
+        "goldendev2": "https://hmsvideoverification.goldendev2.arlocloud.com/videoverification/version",
+        "partnercat": "https://hmsvideoverification.partnercat.arlocloud.com/videoverification/version",
+        "comcast": "https://hmsvideoverification.comcast.arlocloud.com/videoverification/version"
+      }
+    },
+    {
+      "id": "hmsifttt",
+      "name": "HMS IFTTT",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://ifttt.goldendev.arlocloud.com/hmsifttt/version",
+        "goldendev2": "http://ifttt.goldendev2.arlocloud.com/hmsifttt/version",
+        "partnercat": "http://ifttt.partnercat.arlocloud.com/hmsifttt/version",
+        "comcast": "http://ifttt.comcast.arlocloud.com/hmsifttt/version"
+      }
+    },
+    {
+      "id": "inapppayments",
+      "name": "In-App Payments",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://inapppayments.goldendev.arlocloud.com/inapppayments/version",
+        "goldendev2": "http://inapppayments.goldendev2.arlocloud.com/inapppayments/version",
+        "partnercat": "http://inapppayments.partnercat.arlocloud.com/inapppayments/version",
+        "comcast": "http://inapppayments.comcast.arlocloud.com/inapppayments/version"
+      }
+    },
+    {
+      "id": "partnerplatform",
+      "name": "Partner Platform",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://partnerplatform.goldendev.arlocloud.com/partnerplatform/version",
+        "goldendev2": "http://partnerplatform.goldendev2.arlocloud.com/partnerplatform/version",
+        "partnercat": "http://partnerplatform.partnercat.arlocloud.com/partnerplatform/version",
+        "comcast": "http://partnerplatform.comcast.arlocloud.com/partnerplatform/version"
+      }
+    },
+    {
+      "id": "partnerplatform-staging",
+      "name": "Partner Platform Staging",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://partnerplatform-staging.goldendev.arlocloud.com/partnerplatform/version",
+        "goldendev2": "http://partnerplatform-staging.goldendev2.arlocloud.com/partnerplatform/version",
+        "partnercat": "http://partnerplatform-staging.partnercat.arlocloud.com/partnerplatform/version",
+        "comcast": "http://partnerplatform-staging.comcast.arlocloud.com/partnerplatform/version"
+      }
+    },
+    {
+      "id": "hmspayment",
+      "name": "HMS Payment",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://paymentapi.goldendev.arlocloud.com/hmspayment/version",
+        "goldendev2": "http://paymentapi.goldendev2.arlocloud.com/hmspayment/version",
+        "partnercat": "http://paymentapi.partnercat.arlocloud.com/hmspayment/version",
+        "comcast": "http://paymentapi.comcast.arlocloud.com/hmspayment/version"
+      }
+    },
+    {
+      "id": "registration",
+      "name": "Registration",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://registration.goldendev.arlocloud.com/registration/internal/config",
+        "goldendev2": "https://registration.goldendev2.arlocloud.com/registration/internal/config",
+        "partnercat": "https://registration.partnercat.arlocloud.com/registration/internal/config",
+        "comcast": "https://registration.6a5cc08e4a58.arloxcld.com/registration/internal/config"
+      }
+    },
+    {
+      "id": "supporttool",
+      "name": "Support Tool",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://supporttool.goldendev.arlocloud.com/supporttool/version",
+        "goldendev2": "http://supporttool.goldendev2.arlocloud.com/supporttool/version",
+        "partnercat": "http://supporttool.partnercat.arlocloud.com/supporttool/version",
+        "comcast": "http://supporttool.comcast.arlocloud.com/supporttool/version"
+      }
+    },
+    {
+      "id": "mqtt-auth",
+      "name": "MQTT Auth",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://auth.goldendev.arlocloud.com/mqtt-auth/internal/config",
+        "goldendev2": "https://auth.goldendev2.arlocloud.com/mqtt-auth/internal/config",
+        "partnercat": "https://auth.partnercat.arlocloud.com/mqtt-auth/internal/config",
+        "comcast": "https://auth.comcast.arlocloud.com/mqtt-auth/internal/config"
+      }
+    },
+    {
+      "id": "device-location",
+      "name": "Device Location",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://device-location.goldendev.arlocloud.com/device-location/internal/config",
+        "goldendev2": "https://device-location.goldendev2.arlocloud.com/device-location/internal/config",
+        "partnercat": "https://device-location.partnercat.arloxcld.com/device-location/internal/config",
+        "comcast": "https://device-location.6a5cc08e4a58.arloxcld.com/device-location/internal/config"
+      }
+    },
+    {
+      "id": "support",
+      "name": "Support",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://support.goldendev.arlocloud.com/support/internal/config",
+        "goldendev2": "https://support.goldendev2.arlocloud.com/support/internal/config",
+        "partnercat": "https://support.partnercat.arlocloud.com/support/internal/config",
+        "comcast": "https://support.comcast.arlocloud.com/support/internal/config"
+      }
+    },
+    {
+      "id": "policy",
+      "name": "Policy",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://policy.goldendev.arlocloud.com/policy/internal/config",
+        "goldendev2": "https://policy.goldendev2.arlocloud.com/policy/internal/config",
+        "partnercat": "https://policy.partnercat.arlocloud.com/policy/internal/config",
+        "comcast": "https://policy.comcast.arlocloud.com/policy/internal/config"
+      }
+    },
+    {
+      "id": "logger",
+      "name": "Logger",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://logger.goldendev.arlocloud.com/logger/internal/config",
+        "goldendev2": "https://logger.goldendev2.arlocloud.com/logger/internal/config",
+        "partnercat": "https://logger.partnercat.arlocloud.com/logger/internal/config",
+        "comcast": "https://logger.comcast.arlocloud.com/logger/internal/config"
+      }
+    },
+    {
+      "id": "log-server",
+      "name": "Log Server",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://deviceapi.goldendev.messaging.arlo.com/log-server/version",
+        "goldendev2": "https://deviceapi.goldendev2.messaging.arlo.com/log-server/version",
+        "partnercat": "https://deviceapi.partnercat.messaging.arlo.com/log-server/version",
+        "comcast": "https://deviceapi.6a5cc08e4a58.messaging.arlo.com/log-server/version"
+      }
+    },
+    {
+      "id": "mediamigrationscheduler",
+      "name": "Media Migration Scheduler",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://mediamigrationscheduler.goldendev.arlocloud.com/mediamigrationscheduler/version",
+        "goldendev2": "https://mediamigrationscheduler.goldendev2.arlocloud.com/mediamigrationscheduler/version",
+        "partnercat": "https://mediamigrationscheduler.partnercat.arlocloud.com/mediamigrationscheduler/version",
+        "comcast": "https://mediamigrationscheduler.comcast.arlocloud.com/mediamigrationscheduler/version"
+      }
+    },
+    {
+      "id": "messaging",
+      "name": "Messaging",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://messaging.goldendev.arlocloud.com/messaging/internal/config",
+        "goldendev2": "https://messaging.goldendev2.arlocloud.com/messaging/internal/config",
+        "partnercat": "https://messaging.partnercat.arlocloud.com/messaging/internal/config",
+        "comcast": "https://messaging.comcast.arlocloud.com/messaging/internal/config"
+      }
+    },
+    {
+      "id": "partner-notifications",
+      "name": "Partner Notifications",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://partner-notifications.goldendev.arlocloud.com/partner-notifications/version",
+        "goldendev2": "https://partner-notifications.goldendev2.arlocloud.com/partner-notifications/version",
+        "partnercat": "https://partner-notifications.partnercat.arlocloud.com/partner-notifications/version",
+        "comcast": "https://partner-notifications.comcast.arlocloud.com/partner-notifications/version"
+      }
+    },
+    {
+      "id": "partner-proxy",
+      "name": "Partner Proxy",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://partner-proxy.goldendev.arlocloud.com/partner-proxy/internal/config",
+        "goldendev2": "https://partner-proxy.goldendev2.arlocloud.com/partner-proxy/internal/config",
+        "partnercat": "https://partner-proxy.partnercat.arlocloud.com/partner-proxy/internal/config",
+        "comcast": "https://partner-proxy.comcast.arlocloud.com/partner-proxy/internal/config"
+      }
+    },
+    {
+      "id": "hmsnotification",
+      "name": "HMS Notification",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://pn.goldendev.arlocloud.com/hmsnotification/version",
+        "goldendev2": "https://pn.goldendev2.arlocloud.com/hmsnotification/version",
+        "partnercat": "https://pn.partnercat.arlocloud.com/hmsnotification/version",
+        "comcast": "https://pn.comcast.arlocloud.com/hmsnotification/version"
+      }
+    },
+    {
+      "id": "privacy-policy",
+      "name": "Privacy Policy",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://policy.goldendev.arlocloud.com/policy/internal/config",
+        "goldendev2": "https://policy.goldendev2.arlocloud.com/policy/internal/config",
+        "partnercat": "https://policy.partnercat.arlocloud.com/policy/internal/config",
+        "comcast": "https://policy.comcast.arlocloud.com/policy/internal/config"
+      }
+    },
+    {
+      "id": "presence",
+      "name": "Presence",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://presence.goldendev.arlocloud.com/presence/internal/config",
+        "goldendev2": "https://presence.goldendev2.arlocloud.com/presence/internal/config",
+        "partnercat": "https://presence.partnercat.arlocloud.com/presence/internal/config",
+        "comcast": "https://presence.6a5cc08e4a58.arloxcld.com/presence/internal/config"
+      }
+    },
+    {
+      "id": "secret-manager",
+      "name": "Secret Manager",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://secret-manager.goldendev.arlocloud.com/secret-manager/internal/config",
+        "goldendev2": "https://secret-manager.goldendev2.arlocloud.com/secret-manager/internal/config",
+        "partnercat": "https://secret-manager.partnercat.arlocloud.com/secret-manager/internal/config",
+        "comcast": "https://secret-manager.comcast.arlocloud.com/secret-manager/internal/config"
+      }
+    },
+    {
+      "id": "hmsweb-device",
+      "name": "HMS Web Device",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://my.goldendev.arlo.com/hmsdevice/version",
+        "goldendev2": "https://my.goldendev2.arlo.com/hmsdevice/version",
+        "partnercat": "https://my.partnercat.arlo.com/hmsdevice/version",
+        "comcast": "https://my.6a5cc08e4a58.arlo.com/hmsdevice/version"
+      }
+    },
+    {
+      "id": "hmsweb-media",
+      "name": "HMS Web Media",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://my.goldendev.arlo.com/hmsmedia/version",
+        "goldendev2": "https://my.goldendev2.arlo.com/hmsmedia/version",
+        "partnercat": "https://my.partnercat.arlo.com/hmsmedia/version",
+        "comcast": "https://my.6a5cc08e4a58.arlo.com/hmsmedia/version"
+      }
+    },
+    {
+      "id": "hmsweb-web",
+      "name": "HMS Web Client",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://my.goldendev.arlo.com/hmsweb/version",
+        "goldendev2": "https://my.goldendev2.arlo.com/hmsweb/version",
+        "partnercat": "https://my.partnercat.arlo.com/hmsweb/version",
+        "comcast": "https://my.6a5cc08e4a58.arlo.com/hmsweb/version"
+      }
+    },
+    {
+      "id": "hmsdeviceevents",
+      "name": "HMS Device Events",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsdeviceevents.goldendev.arlocloud.com/hmsdeviceevent/version",
+        "goldendev2": "http://hmsdeviceevents.goldendev2.arlocloud.com/hmsdeviceevent/version",
+        "partnercat": "http://hmsdeviceevents.partnercat.arlocloud.com/hmsdeviceevent/version",
+        "comcast": "https://deviceapi.6a5cc08e4a58.messaging.arlo.com/hmsdeviceevent/version"
+      }
+    },
+    {
+      "id": "hmsfeeds",
+      "name": "HMS Feeds",
+      "versionUrlByEnvironment": {
+        "goldendev": "http://hmsfeeds.goldendev.arlocloud.com/hmsfeeds/version",
+        "goldendev2": "http://hmsfeeds.goldendev2.arlocloud.com/hmsfeeds/version",
+        "partnercat": "http://hmsfeeds.partnercat.arlocloud.com/hmsfeeds/version",
+        "comcast": "https://myapi.6a5cc08e4a58.arlo.com/hmsfeeds/version"
+      }
+    },
+    {
+      "id": "hmsdeviceauth",
+      "name": "HMS Device Auth",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://deviceapi.goldendev.messaging.arlo.com/hmsdeviceauth/version",
+        "goldendev2": "https://deviceapi.goldendev2.messaging.arlo.com/hmsdeviceauth/version",
+        "partnercat": "https://deviceapi.partnercat.messaging.arlo.com/hmsdeviceauth/version",
+        "comcast": "https://deviceapi.6a5cc08e4a58.messaging.arlo.com/hmsdeviceauth/version"
+      }
+    },
+    {
+      "id": "hmspubsub",
+      "name": "HMS PubSub",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://myapi.goldendev.arlo.com/hmspubsub/version",
+        "goldendev2": "https://myapi.goldendev2.arlo.com/hmspubsub/version",
+        "partnercat": "https://myapi.partnercat.arlo.com/hmspubsub/version",
+        "comcast": "https://myapi.6a5cc08e4a58.arlo.com/hmspubsub/version"
+      }
+    },
+    {
+      "id": "nginx-deviceapi",
+      "name": "Nginx Device API",
+      "versionUrlByEnvironment": {
+        "goldendev": "https://deviceapi.goldendev.messaging.arlo.com/hmsweb/version",
+        "goldendev2": "https://deviceapi.goldendev2.messaging.arlo.com/hmsweb/version",
+        "partnercat": "https://deviceapi.partnercat.messaging.arlo.com/hmsweb/version",
+        "comcast": "https://deviceapi.6a5cc08e4a58.messaging.arlo.com/hmsweb/version"
+      }
+    }
+  ]
+}

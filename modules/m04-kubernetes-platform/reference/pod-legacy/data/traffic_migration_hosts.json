@@ -1,0 +1,459 @@
+{
+  "hosts": [
+    {
+      "id": "spider-z6-1",
+      "hostname": "spider-z6-1.comcast.arlocloud.com",
+      "label": "spider-z6-1"
+    },
+    {
+      "id": "discovery",
+      "hostname": "discovery.comcast.arlocloud.com",
+      "label": "discovery"
+    },
+    {
+      "id": "advisor",
+      "hostname": "advisor.comcast.arlocloud.com",
+      "label": "advisor"
+    },
+    {
+      "id": "advisor-arloxcld",
+      "hostname": "advisor.6a5cc08e4a58.arloxcld.com",
+      "label": "advisor"
+    },
+    {
+      "id": "oauth",
+      "hostname": "oauth.comcast.arlocloud.com",
+      "label": "oauth"
+    },
+    {
+      "id": "oauth-arlo",
+      "hostname": "oauth.6a5cc08e4a58.arlo.com",
+      "label": "oauth"
+    },
+    {
+      "id": "partner-proxy",
+      "hostname": "partner-proxy.comcast.arlocloud.com",
+      "label": "partner-proxy"
+    },
+    {
+      "id": "policy",
+      "hostname": "policy.comcast.arlocloud.com",
+      "label": "policy"
+    },
+    {
+      "id": "presence",
+      "hostname": "presence.6a5cc08e4a58.arloxcld.com",
+      "label": "presence"
+    },
+    {
+      "id": "presence-secure",
+      "hostname": "presence-secure.6a5cc08e4a58.arloxcld.com",
+      "label": "presence-secure"
+    },
+    {
+      "id": "registration",
+      "hostname": "registration.6a5cc08e4a58.arloxcld.com",
+      "label": "registration"
+    },
+    {
+      "id": "registration-secure",
+      "hostname": "registration-secure.6a5cc08e4a58.arloxcld.com",
+      "label": "registration-secure"
+    },
+    {
+      "id": "mcs",
+      "hostname": "mcs.6a5cc08e4a58.arlo.com",
+      "label": "mcs"
+    },
+    {
+      "id": "mcs-secure",
+      "hostname": "mcs-secure.6a5cc08e4a58.arlo.com",
+      "label": "mcs-secure"
+    },
+    {
+      "id": "messaging",
+      "hostname": "messaging.comcast.arlocloud.com",
+      "label": "messaging"
+    },
+    {
+      "id": "geolocation",
+      "hostname": "geolocation.comcast.arlocloud.com",
+      "label": "geolocation"
+    },
+    {
+      "id": "directory",
+      "hostname": "directory.comcast.arlocloud.com",
+      "label": "directory"
+    },
+    {
+      "id": "directory-arloxcld",
+      "hostname": "directory.6a5cc08e4a58.arloxcld.com",
+      "label": "directory"
+    },
+    {
+      "id": "device-location",
+      "hostname": "device-location.6a5cc08e4a58.arloxcld.com",
+      "label": "device-location"
+    },
+    {
+      "id": "device-location-secure",
+      "hostname": "device-location-secure.6a5cc08e4a58.arloxcld.com",
+      "label": "device-location-secure"
+    },
+    {
+      "id": "device-authentication",
+      "hostname": "device-authentication.comcast.arlocloud.com",
+      "label": "device-authentication"
+    },
+    {
+      "id": "history",
+      "hostname": "history.comcast.arlocloud.com",
+      "label": "history"
+    },
+    {
+      "id": "auth",
+      "hostname": "auth.comcast.arlocloud.com",
+      "label": "auth"
+    },
+    {
+      "id": "api",
+      "hostname": "api.comcast.arlocloud.com",
+      "label": "api"
+    },
+    {
+      "id": "api-arlo",
+      "hostname": "api.6a5cc08e4a58.arlo.com",
+      "label": "api"
+    },
+    {
+      "id": "supporttool",
+      "hostname": "supporttool.comcast.arlocloud.com",
+      "label": "supporttool"
+    },
+    {
+      "id": "support",
+      "hostname": "support.comcast.arlocloud.com",
+      "label": "support"
+    },
+    {
+      "id": "support-arloxcld",
+      "hostname": "support.6a5cc08e4a58.arloxcld.com",
+      "label": "support"
+    },
+    {
+      "id": "hmsentityauth",
+      "hostname": "hmsentityauth.comcast.arlocloud.com",
+      "label": "hmsentityauth"
+    },
+    {
+      "id": "safelocations",
+      "hostname": "safelocations.comcast.arlocloud.com",
+      "label": "safelocations"
+    },
+    {
+      "id": "hmsdeviceauth",
+      "hostname": "hmsdeviceauth.comcast.arlocloud.com",
+      "label": "hmsdeviceauth"
+    },
+    {
+      "id": "hmsfeeds",
+      "hostname": "hmsfeeds.comcast.arlocloud.com",
+      "label": "hmsfeeds"
+    },
+    {
+      "id": "hmsguard",
+      "hostname": "hmsguard.comcast.arlocloud.com",
+      "label": "hmsguard"
+    },
+    {
+      "id": "hmspubsub",
+      "hostname": "hmspubsub.comcast.arlocloud.com",
+      "label": "hmspubsub"
+    },
+    {
+      "id": "hmscsapi",
+      "hostname": "hmscsapi.comcast.arlocloud.com",
+      "label": "hmscsapi"
+    },
+    {
+      "id": "partnerplatform",
+      "hostname": "partnerplatform.comcast.arlocloud.com",
+      "label": "partnerplatform"
+    },
+    {
+      "id": "partnerplatform-staging",
+      "hostname": "partnerplatform-staging.comcast.arlocloud.com",
+      "label": "partnerplatform-staging"
+    },
+    {
+      "id": "mediamigrationscheduler",
+      "hostname": "mediamigrationscheduler.comcast.arlocloud.com",
+      "label": "mediamigrationscheduler"
+    },
+    {
+      "id": "arloautomation-leader",
+      "hostname": "arloautomation-leader.comcast.arlocloud.com",
+      "label": "arloautomation-leader"
+    },
+    {
+      "id": "arloautomation",
+      "hostname": "arloautomation.comcast.arlocloud.com",
+      "label": "arloautomation"
+    },
+    {
+      "id": "arloautomation-job",
+      "hostname": "arloautomation-job.comcast.arlocloud.com",
+      "label": "arloautomation-job"
+    },
+    {
+      "id": "arloautomation-scheduler",
+      "hostname": "arloautomation-scheduler.comcast.arlocloud.com",
+      "label": "arloautomation-scheduler"
+    },
+    {
+      "id": "hmsdeviceshadow",
+      "hostname": "hmsdeviceshadow.comcast.arlocloud.com",
+      "label": "hmsdeviceshadow"
+    },
+    {
+      "id": "hmsdeviceevents",
+      "hostname": "hmsdeviceevents.comcast.arlocloud.com",
+      "label": "hmsdeviceevents"
+    },
+    {
+      "id": "hmsclientauth",
+      "hostname": "hmsclientauth.comcast.arlocloud.com",
+      "label": "hmsclientauth"
+    },
+    {
+      "id": "hmscspubsub",
+      "hostname": "hmscspubsub.comcast.arlocloud.com",
+      "label": "hmscspubsub"
+    },
+    {
+      "id": "hmsreportingservice",
+      "hostname": "hmsreportingservice.comcast.arlocloud.com",
+      "label": "hmsreportingservice"
+    },
+    {
+      "id": "hmsvideoverification",
+      "hostname": "hmsvideoverification.comcast.arlocloud.com",
+      "label": "hmsvideoverification"
+    },
+    {
+      "id": "arlo-device",
+      "hostname": "arlo-device.6a5cc08e4a58.messaging.arlo.com",
+      "label": "arlo-device"
+    },
+    {
+      "id": "arlo-media",
+      "hostname": "arlo-media.6a5cc08e4a58.ar.arlo.com",
+      "label": "arlo-media"
+    },
+    {
+      "id": "hmswebclient",
+      "hostname": "hmswebclient.comcast.arlocloud.com",
+      "label": "hmswebclient"
+    },
+    {
+      "id": "hmsam",
+      "hostname": "hmsam.comcast.arlocloud.com",
+      "label": "hmsam"
+    },
+    {
+      "id": "alexaapi",
+      "hostname": "alexaapi.comcast.arlocloud.com",
+      "label": "alexaapi"
+    },
+    {
+      "id": "googleapi",
+      "hostname": "googleapi.comcast.arlocloud.com",
+      "label": "googleapi"
+    },
+    {
+      "id": "ifttt",
+      "hostname": "ifttt.comcast.arlocloud.com",
+      "label": "ifttt"
+    },
+    {
+      "id": "paymentapi",
+      "hostname": "paymentapi.comcast.arlocloud.com",
+      "label": "paymentapi"
+    },
+    {
+      "id": "hmsdevicemanagement",
+      "hostname": "hmsdevicemanagement.comcast.arlocloud.com",
+      "label": "hmsdevicemanagement"
+    },
+    {
+      "id": "hmssipstreaming",
+      "hostname": "hmssipstreaming.comcast.arlocloud.com",
+      "label": "hmssipstreaming"
+    },
+    {
+      "id": "safeapi",
+      "hostname": "safeapi.comcast.arlocloud.com",
+      "label": "safeapi"
+    },
+    {
+      "id": "pn-prod",
+      "hostname": "pn-prod.comcast.arlocloud.com",
+      "label": "pn-prod"
+    },
+    {
+      "id": "logserver",
+      "hostname": "logserver.comcast.arlocloud.com",
+      "label": "logserver"
+    },
+    {
+      "id": "location",
+      "hostname": "location.comcast.arlocloud.com",
+      "label": "location"
+    },
+    {
+      "id": "partnerapi",
+      "hostname": "partnerapi.6a5cc08e4a58.arlo.com",
+      "label": "partnerapi"
+    },
+    {
+      "id": "location-staging",
+      "hostname": "location-staging.comcast.arlocloud.com",
+      "label": "location-staging"
+    },
+    {
+      "id": "partnerapi-staging",
+      "hostname": "partnerapi-staging.6a5cc08e4a58.arlo.com",
+      "label": "partnerapi-staging"
+    },
+    {
+      "id": "partner-notifications",
+      "hostname": "partner-notifications.comcast.arlocloud.com",
+      "label": "partner-notifications"
+    },
+    {
+      "id": "inapppayments",
+      "hostname": "inapppayments.comcast.arlocloud.com",
+      "label": "inapppayments"
+    },
+    {
+      "id": "myapi",
+      "hostname": "myapi.6a5cc08e4a58.arlo.com",
+      "label": "myapi"
+    },
+    {
+      "id": "logger",
+      "hostname": "logger.comcast.arlocloud.com",
+      "label": "logger"
+    },
+    {
+      "id": "secret-manager",
+      "hostname": "secret-manager.comcast.arlocloud.com",
+      "label": "secret-manager"
+    },
+    {
+      "id": "hmshomekit-scheduler",
+      "hostname": "hmshomekit-scheduler.comcast.arlocloud.com",
+      "label": "hmshomekit-scheduler"
+    },
+    {
+      "id": "hmshomekitapp",
+      "hostname": "hmshomekitapp.comcast.arlocloud.com",
+      "label": "hmshomekitapp"
+    },
+    {
+      "id": "ocapi-app",
+      "hostname": "ocapi-app.6a5cc08e4a58.arlo.com",
+      "label": "ocapi-app"
+    },
+    {
+      "id": "hmsstreamingapi",
+      "hostname": "hmsstreamingapi.comcast.arlocloud.com",
+      "label": "hmsstreamingapi"
+    },
+    {
+      "id": "weblivestream-z6",
+      "hostname": "weblivestream-z6.6a5cc08e4a58.arlo.com",
+      "label": "weblivestream-z6"
+    },
+    {
+      "id": "hmsplan-generator",
+      "hostname": "hmsplan-generator.comcast.arlocloud.com",
+      "label": "hmsplan-generator"
+    },
+    {
+      "id": "deviceapi",
+      "hostname": "deviceapi.6a5cc08e4a58.messaging.arlo.com",
+      "label": "deviceapi"
+    },
+    {
+      "id": "deviceapi-secure",
+      "hostname": "deviceapi-secure.6a5cc08e4a58.messaging.arlo.com",
+      "label": "deviceapi-secure"
+    },
+    {
+      "id": "notifications",
+      "hostname": "notifications.6a5cc08e4a58.arlo.com",
+      "label": "notifications"
+    },
+    {
+      "id": "hmsapi",
+      "hostname": "hmsapi.comcast.arlocloud.com",
+      "label": "hmsapi"
+    },
+    {
+      "id": "broker-service",
+      "hostname": "broker-service.comcast.arlocloud.com",
+      "label": "broker-service"
+    },
+    {
+      "id": "livestream",
+      "hostname": "livestream.6a5cc08e4a58.arlo.com",
+      "label": "livestream"
+    },
+    {
+      "id": "ssocallback",
+      "hostname": "ssocallback.comcast.arlocloud.com",
+      "label": "ssocallback"
+    },
+    {
+      "id": "arlosecurity",
+      "hostname": "arlosecurity.arlocloud.com",
+      "label": "arlosecurity"
+    },
+    {
+      "id": "arloanalyticssitedb",
+      "hostname": "arloanalyticssitedb.comcast.arlocloud.com",
+      "label": "arloanalyticssitedb"
+    },
+    {
+      "id": "arloanalyticsface-sm",
+      "hostname": "arloanalyticsface-sm.comcast.arlocloud.com",
+      "label": "arloanalyticsface-sm"
+    },
+    {
+      "id": "arloanalyticscpu-sm",
+      "hostname": "arloanalyticscpu-sm.comcast.arlocloud.com",
+      "label": "arloanalyticscpu-sm"
+    },
+    {
+      "id": "oc-accounts",
+      "hostname": "oc-accounts.comcast.arlocloud.com",
+      "label": "oc-accounts"
+    },
+    {
+      "id": "oc-auth",
+      "hostname": "oc-auth.comcast.arlocloud.com",
+      "label": "oc-auth"
+    },
+    {
+      "id": "oc-legacy",
+      "hostname": "oc-legacy.comcast.arlocloud.com",
+      "label": "oc-legacy"
+    },
+    {
+      "id": "oc-security",
+      "hostname": "oc-security.comcast.arlocloud.com",
+      "label": "oc-security"
+    }
+  ]
+}

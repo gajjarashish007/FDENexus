@@ -1,0 +1,3 @@
+# Pod dashboard Python dependencies (Route53 traffic migration).
+# Install: bash install.sh   OR   python3 -m pip install --user -r requirements.txt
+boto3>=1.35.0

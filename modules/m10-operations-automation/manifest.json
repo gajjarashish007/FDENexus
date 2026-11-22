@@ -1,0 +1,110 @@
+{
+  "id": "M10",
+  "name": "Operations Automation Engine",
+  "group": "Operations",
+  "owner": "SRE",
+  "phase": "P2",
+  "icon": "bi-gear-wide-connected",
+  "description": "Central engine for scheduled, event- and incident-driven automation with full controls.",
+  "capabilities": [
+    {
+      "id": "scheduled-operations",
+      "name": "Scheduled operations",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "event-driven-automation",
+      "name": "Event-driven automation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "incident-triggered-automation",
+      "name": "Incident-triggered automation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "resource-lifecycle-automation",
+      "name": "Resource lifecycle automation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "patch-management",
+      "name": "Patch management",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "backup-scheduling",
+      "name": "Backup scheduling",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "database-maintenance",
+      "name": "Database maintenance",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "kubernetes-maintenance",
+      "name": "Kubernetes maintenance",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "certificate-renewal",
+      "name": "Certificate renewal",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "secret-rotation",
+      "name": "Secret rotation",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "resource-cleanup",
+      "name": "Resource cleanup",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "capacity-optimization",
+      "name": "Capacity optimization",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "recovery-workflows",
+      "name": "Recovery workflows",
+      "status": "planned",
+      "summary": "Not built yet."
+    },
+    {
+      "id": "configuration-remediation",
+      "name": "Configuration remediation",
+      "status": "planned",
+      "summary": "Not built yet."
+    }
+  ],
+  "enabled": false,
+  "design": {
+    "automation_contract": [
+      "owner",
+      "trigger",
+      "preconditions",
+      "authorization scope",
+      "approval requirement",
+      "execution timeout",
+      "retry strategy",
+      "idempotency controls",
+      "verification",
+      "audit evidence"
+    ]
+  }
+}
