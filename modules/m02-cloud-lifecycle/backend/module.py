@@ -55,11 +55,14 @@ def register(app, ctx):
             conn.execute(sql, args)
             conn.commit()
 
-    def can_write(user, tier):
+    def can_write(user, tier, env=None):
         if user["role"] == "viewer":
             return "Viewers have read-only access."
         if tier == "production" and user["role"] not in ("admin", "operator"):
             return "Only admins and operators can request production changes."
+        abac = ctx.services.get("abac")  # M07 attribute rules (team ownership, MFA for production)
+        if abac:
+            return abac(user, {"tier": tier, "team": (env or {}).get("team"), "name": (env or {}).get("id")})
         return None
 
     def env_status(e):
@@ -478,7 +481,7 @@ def register(app, ctx):
         st = env_status(e)
         if st not in ("active", "provisioning"):
             return err(f"Environment {e['id']} is {st}.")
-        msg = can_write(user, e["tier"])
+        msg = can_write(user, e["tier"], e)
         if msg:
             return err(msg, code=403)
         values = d.get("values") or {}

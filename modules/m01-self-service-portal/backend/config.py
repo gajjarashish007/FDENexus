@@ -26,7 +26,7 @@ BOOTSTRAP_ADMIN_EMAIL = os.environ.get("M01_ADMIN_EMAIL", "admin@example.com")
 
 # Server
 HOST = os.environ.get("M01_HOST", "0.0.0.0")
-PORT = int(os.environ.get("M01_PORT", "5001"))
+PORT = int(os.environ.get("PORT") or os.environ.get("M01_PORT") or "8077")  # one port: UI + API
 
 # Demo mode: when true, infrastructure actions are SIMULATED (no real AWS call).
 # Default ON for local use; set M01_DEMO=0 in production once real backends exist.

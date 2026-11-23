@@ -125,7 +125,7 @@ def _context() -> SimpleNamespace:
     return SimpleNamespace(
         auth_required=api.auth_required, admin_required=api.admin_required,
         role_required=api.role_required, approver_roles=api.APPROVER_ROLES,
-        store=store, config=config, services=services,
+        store=store, config=config, services=services, identity=api.IDENTITY, issue_token=api._create_token,
         get_setting=get_setting, set_setting=set_setting, modules_dir=MODULES_DIR,
     )
 

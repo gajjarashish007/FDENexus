@@ -231,9 +231,20 @@ def s3_buckets(s, r):
 
 def iam_roles(s, r):
     c = s.client("iam")
-    return [row(x["Arn"], x["RoleName"], "", {"path": x.get("Path"), "created": x.get("CreateDate"),
-                "last_used": (x.get("RoleLastUsed") or {}).get("LastUsedDate"), "description": (x.get("Description") or "")[:120]}, {}, x)
-            for x in _pages(c, "list_roles", "Roles")]
+    roles = list(_pages(c, "list_roles", "Roles"))
+
+    def last_used(x):
+        # list_roles never includes RoleLastUsed; only get_role does.
+        try:
+            lu = c.get_role(RoleName=x["RoleName"])["Role"].get("RoleLastUsed") or {}
+            return True, lu.get("LastUsedDate"), lu.get("Region")
+        except Exception:
+            return False, None, None
+    with ThreadPoolExecutor(8) as pool:
+        used = list(pool.map(last_used, roles))
+    return [row(x["Arn"], x["RoleName"], "", {"path": x.get("Path"), "created": x.get("CreateDate"), "last_used": u[1], "last_used_region": u[2],
+                "last_used_checked": u[0], "description": (x.get("Description") or "")[:120]}, {}, x)
+            for x, u in zip(roles, used)]
 
 
 def route53_zones(s, r):

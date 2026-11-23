@@ -7,6 +7,7 @@ Infrastructure actions are simulated in DEMO_MODE.
 from __future__ import annotations
 
 import json
+import secrets
 import os
 import re
 import threading
@@ -24,14 +25,27 @@ import store
 import validators
 
 
+# ----------------------------------------------------------------- identity hooks (M07 plugs in here)
+# on_login(user, body)        -> None to continue, or a Flask response (e.g. an MFA challenge)
+# on_token(user, payload)     -> called for every issued token (session tracking)
+# resolve_token(raw)          -> user dict for non-JWT credentials (service tokens), else None
+# on_auth(user, payload)      -> user (possibly with an elevated temporary role) or (error, http_code)
+IDENTITY = {"on_login": [], "on_token": [], "resolve_token": [], "on_auth": []}
+
+
 # ----------------------------------------------------------------- tokens
-def _create_token(user: dict) -> str:
+def _create_token(user: dict, method: str = "password") -> str:
     payload = {
         "sub": str(user["id"]),
         "username": user["username"],
         "role": user["role"],
+        "jti": secrets.token_urlsafe(16),
+        "amr": method,
+        "iat": datetime.now(timezone.utc),
         "exp": datetime.now(timezone.utc) + timedelta(hours=config.JWT_EXPIRY_HOURS),
     }
+    for hook in IDENTITY["on_token"]:
+        hook(user, payload)
     return jwt.encode(payload, config.JWT_SECRET, algorithm="HS256")
 
 
@@ -48,7 +62,15 @@ def auth_required(fn):
         header = request.headers.get("Authorization", "")
         if not header.startswith("Bearer "):
             return jsonify({"error": "Authentication required"}), 401
-        payload = _decode_token(header[7:])
+        raw = header[7:]
+        for hook in IDENTITY["resolve_token"]:
+            svc = hook(raw)
+            if svc:
+                if isinstance(svc, tuple):
+                    return jsonify({"error": svc[0]}), svc[1]
+                request.current_user = svc
+                return fn(*args, **kwargs)
+        payload = _decode_token(raw)
         if not payload:
             return jsonify({"error": "Invalid or expired token"}), 401
         user = store.get_user(int(payload["sub"]))
@@ -56,7 +78,13 @@ def auth_required(fn):
             return jsonify({"error": "User not found"}), 401
         if user.get("status") != "approved":
             return jsonify({"error": "Account is not active"}), 403
+        for hook in IDENTITY["on_auth"]:
+            res = hook(user, payload)
+            if isinstance(res, tuple):
+                return jsonify({"error": res[0]}), res[1]
+            user = res or user
         request.current_user = user
+        request.token_payload = payload
         return fn(*args, **kwargs)
     return wrapper
 
@@ -121,6 +149,10 @@ def register_routes(app):
                 "disabled": "Your account is disabled. Contact an administrator.",
             }
             return jsonify({"error": msgs.get(blocked, "Account not active"), "status": blocked}), 403
+        for hook in IDENTITY["on_login"]:
+            challenge = hook(user, d)
+            if challenge is not None:
+                return challenge
         token = _create_token(user)
         store.add_audit(user["id"], user["username"], "login")
         return jsonify({"token": token, "user": user}), 200

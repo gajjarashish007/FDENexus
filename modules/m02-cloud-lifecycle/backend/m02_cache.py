@@ -251,7 +251,7 @@ class Cache:
         if tag and "=" in tag:
             k, v = tag.split("=", 1)
             sql += " AND tags LIKE ?"; args.append(f'%"{k}": "{v}"%')
-        order = {"name": "lower(name), resource_id", "state": "state, lower(name)", "region": "region, lower(name)",
+        order = {"name": "(name IS NULL OR name = ''), lower(name), resource_id", "state": "state, lower(name)", "region": "region, lower(name)",
                  "service": "service, lower(name)", "fetched": "fetched_at DESC"}.get(sort, "lower(name)")
         total = self._q("SELECT COUNT(*) n " + sql, tuple(args), one=True)["n"]
         rows = self._q(f"SELECT account_id,region,service,resource_id,name,state,summary,tags,fetched_at {sql} ORDER BY {order} LIMIT ? OFFSET ?",

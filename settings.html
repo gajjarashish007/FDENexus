@@ -6,7 +6,7 @@
   <title>Settings · FDE Nexus</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link href="css/styles.css" rel="stylesheet">
+  <link href="css/styles.css?v=202611231725" rel="stylesheet">
 </head>
 <body>
 <div class="nx-app" id="nx-app" data-page="settings.html" data-title="Settings">
@@ -16,6 +16,7 @@
   <div class="nx-tab-host">
     <div class="nx-tabs" data-group="settings">
       <button class="active" data-tab="profile">Profile</button>
+      <button data-tab="security">Security</button>
       <button data-tab="appearance">Appearance</button>
       <button data-tab="autonomy">AI Autonomy</button>
       <button data-tab="integrations">Integrations</button>
@@ -37,6 +38,15 @@
           <button class="btn btn-primary" type="submit">Update password</button>
         </form>
       </div></div>
+    </div>
+
+    <div class="nx-tabpane" id="pane-security">
+      <div class="row g-3">
+        <div class="col-xl-6"><div class="nx-card"><div class="nx-card-body" id="sec-mfa">Loading…</div></div></div>
+        <div class="col-xl-6"><div class="nx-card"><div class="nx-card-body">
+          <h2 class="h6 fw-bold d-flex justify-content-between">My sessions <button class="btn btn-sm btn-outline-danger" id="sec-killall">Sign out other sessions</button></h2>
+          <div id="sec-sessions" class="small">Loading…</div></div></div></div>
+      </div>
     </div>
 
     <div class="nx-tabpane" id="pane-appearance">
@@ -62,9 +72,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/mock-data.js"></script>
-<script src="js/m01-api.js"></script>
-<script src="js/components.js"></script>
+<script src="js/mock-data.js?v=202611231725"></script>
+<script src="js/m01-api.js?v=202611231725"></script>
+<script src="js/components.js?v=202611231725"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => setTimeout(() => {
   const NX = window.NEXUS, s = NX.session.get() || {}, $ = id => document.getElementById(id);
@@ -78,6 +88,52 @@ document.addEventListener("DOMContentLoaded", () => setTimeout(() => {
   });
 }, 0));
 </script>
-<script src="js/app.js"></script>
+<script src="js/app.js?v=202611231725"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => setTimeout(async () => {
+  const NX = window.NEXUS, esc = NX.esc, $ = id => document.getElementById(id);
+  if (!$("sec-mfa")) return;
+  if (location.hash === "#security") { const b = document.querySelector('[data-tab="security"]'); if (b) b.click(); }
+  async function mfa() {
+    let o; try { o = await NX.api.get("/api/m07/overview"); } catch (e) { $("sec-mfa").textContent = e.message; return; }
+    const on = o.me.mfa_enabled;
+    $("sec-mfa").innerHTML = `<h2 class="h6 fw-bold">Two-step verification (MFA)</h2>
+      <p class="small">${on ? '<span class="nx-badge b-success">on</span> Sign-in asks for a code from your authenticator app.' : '<span class="nx-badge b-secondary">off</span> Add an authenticator app (Google Authenticator, Microsoft Authenticator, 1Password, Authy).'}
+        ${o.me.mfa_required && !on ? '<br><b class="text-danger">Your role requires MFA.</b>' : ""}</p>
+      ${on ? '<div class="input-group" style="max-width:340px"><input class="form-control nx-mono" id="mf-off-code" placeholder="current 6-digit code"><button class="btn btn-outline-danger" id="mf-off">Turn off</button></div>'
+           : '<button class="btn btn-primary" id="mf-start"><i class="bi bi-phone me-1"></i>Set up authenticator</button>'}<div id="mf-out" class="mt-3"></div>`;
+    const st = $("mf-start");
+    if (st) st.onclick = async () => {
+      try {
+        const r = await NX.api.post("/api/m07/mfa/enroll");
+        $("mf-out").innerHTML = `<ol class="small ps-3"><li>In your authenticator app choose <b>Add account</b> and enter this setup key (or open the link on your phone):
+            <div class="nx-mono fs-6 my-2 p-2 border rounded user-select-all">${esc(r.secret.match(/.{1,4}/g).join(" "))}</div><a href="${esc(r.otpauth)}" class="small">${esc(r.otpauth.slice(0, 60))}…</a></li>
+          <li class="mt-2">Enter the 6-digit code it shows:</li></ol>
+          <div class="input-group" style="max-width:300px"><input class="form-control nx-mono" id="mf-code" inputmode="numeric" maxlength="6" placeholder="123456"><button class="btn btn-primary" id="mf-verify">Verify</button></div>`;
+        $("mf-verify").onclick = async () => {
+          try {
+            const v = await NX.api.post("/api/m07/mfa/verify", { code: $("mf-code").value.trim() });
+            $("mf-out").innerHTML = `<div class="alert alert-success small"><b>MFA is on.</b> Save these recovery codes somewhere safe. Each works once if you lose your phone. They are not shown again.
+              <pre class="nx-log mt-2 mb-0">${v.recovery_codes.map(esc).join("\n")}</pre></div>`;
+            setTimeout(mfa, 60000);
+          } catch (e) { NX.toast(e.message, "danger"); }
+        };
+      } catch (e) { NX.toast(e.message, "danger"); }
+    };
+    const off = $("mf-off");
+    if (off) off.onclick = async () => { try { await NX.api.post("/api/m07/mfa/disable", { code: $("mf-off-code").value.trim() }); NX.toast("MFA turned off.", "warning"); mfa(); } catch (e) { NX.toast(e.message, "danger"); } };
+  }
+  async function sessions() {
+    try {
+      const r = await NX.api.get("/api/m07/sessions");
+      $("sec-sessions").innerHTML = r.sessions.filter(s => s.active).map(s => `<div class="d-flex justify-content-between border-bottom py-1"><span>${esc(s.method)} · ${esc(s.ip || "")} · since ${esc(s.created_at)}${s.current ? ' <span class="nx-badge b-primary">this device</span>' : ""}
+        <div class="nx-muted text-truncate" style="max-width:380px">${esc(s.user_agent || "")}</div></span>${s.current ? "" : `<button class="btn btn-sm btn-link text-danger" data-s="${esc(s.id)}">Sign out</button>`}</div>`).join("") || "No active sessions.";
+      document.querySelectorAll("#sec-sessions [data-s]").forEach(b => b.onclick = async () => { await NX.api.post("/api/m07/sessions/revoke", { id: b.dataset.s }); sessions(); });
+    } catch (e) { $("sec-sessions").textContent = e.message; }
+  }
+  $("sec-killall").onclick = async () => { const me = await NX.api.get("/api/auth/me"); await NX.api.post("/api/m07/sessions/revoke", { user_id: me.user.id }); NX.toast("Other sessions signed out.", "success"); sessions(); };
+  mfa(); sessions();
+}, 0));
+</script>
 </body>
 </html>

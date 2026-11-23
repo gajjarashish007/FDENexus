@@ -10,26 +10,26 @@
     {
       "id": "agent-orchestration",
       "name": "Agent orchestration",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Teams: a lead agent delegates sub-tasks to its members (one level deep, budgeted). Each run has a full trace."
     },
     {
       "id": "model-gateway",
       "name": "Model gateway",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Anthropic Claude, OpenAI ChatGPT, any OpenAI-compatible server (Azure OpenAI, Ollama, Groq, OpenRouter, vLLM) and AWS Bedrock Converse. Keys come from a host env var or are stored encrypted. Adapters are tested against stub servers; run Test on each provider to check your real key."
     },
     {
       "id": "model-selection",
       "name": "Model selection",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Each agent picks its provider and model. Teams can mix providers."
     },
     {
       "id": "prompt-versioning",
       "name": "Prompt versioning",
       "status": "planned",
-      "summary": "Not built yet."
+      "summary": "Not built yet. System prompts are edited in place and not versioned."
     },
     {
       "id": "retrieval-augmented-generation",
@@ -53,25 +53,25 @@
       "id": "agent-memory-boundaries",
       "name": "Agent memory boundaries",
       "status": "planned",
-      "summary": "Not built yet."
+      "summary": "Not built yet. Every run starts with no memory of earlier runs."
     },
     {
       "id": "tool-registry",
       "name": "Tool registry",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Built-in read-only tools: current_time, list_modules, cache_search (AWS data cache)."
     },
     {
       "id": "tool-authorization",
       "name": "Tool authorization",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "An agent can use a tool only if it lists it and the caller has the tool's minimum role."
     },
     {
       "id": "human-approval",
       "name": "Human approval",
       "status": "planned",
-      "summary": "Not built yet."
+      "summary": "Not built yet. There are no write tools, so agents cannot change infrastructure. Write tools will need approval through M03."
     },
     {
       "id": "agent-evaluation",
@@ -83,34 +83,34 @@
       "id": "hallucination-controls",
       "name": "Hallucination controls",
       "status": "planned",
-      "summary": "Not built yet."
+      "summary": "Not built yet. Answers are not checked against sources."
     },
     {
       "id": "prompt-injection-protection",
       "name": "Prompt injection protection",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Tool output is wrapped as data and the system prompt says not to follow it. This reduces risk but does not guarantee it."
     },
     {
       "id": "data-leakage-prevention",
       "name": "Data leakage prevention",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Obvious secrets (AWS keys, password/token values, private keys) are redacted from tool output before the model sees it. Prompts still go to the chosen provider, so pick providers your data policy allows."
     },
     {
       "id": "execution-tracing",
       "name": "Execution tracing",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Each run stores every model call, tool call, delegation, token count and duration."
     },
     {
       "id": "cost-monitoring",
       "name": "Cost monitoring",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Token counts are recorded for every run. Cost in currency is shown only when you enter the provider's price per million tokens."
     }
   ],
-  "enabled": false,
+  "enabled": true,
   "design": {
     "agents": [
       "Infrastructure architecture",
@@ -126,5 +126,8 @@
       "Documentation and knowledge retrieval"
     ],
     "guardrail": "Agents call the same APIs as people. They cannot bypass authorization, policy checks or production approvals."
+  },
+  "ui": {
+    "workspace": "ai-platform.html"
   }
 }

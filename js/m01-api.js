@@ -1,14 +1,15 @@
 /* FDE Nexus: client for the Module 1 (Self-Service Portal) backend.
-   Base URL resolution: localStorage "nx-api-base" > window.NX_API_BASE > same host, port 5001.
+   Base URL: same origin as the page (UI and API share one port); window.NX_API_BASE overrides it.
    The JWT lives in the nx-session object (field "token"). */
 (function () {
   "use strict";
   const NX = window.NEXUS;
 
   function base() {
-    return (localStorage.getItem("nx-api-base") || window.NX_API_BASE ||
-      `${location.protocol}//${location.hostname || "localhost"}:5001`).replace(/\/$/, "");
+    // UI and API are served from the same origin (one port). Only an explicit window.NX_API_BASE overrides it.
+    return (window.NX_API_BASE || (location.protocol.startsWith("http") ? location.origin : "http://localhost:8077")).replace(/\/$/, "");
   }
+  try { localStorage.removeItem("nx-api-base"); } catch (e) { /* old builds stored a separate API port here */ }
   function token() {
     try { return (JSON.parse(localStorage.getItem("nx-session") || "null") || {}).token || ""; }
     catch (e) { return ""; }

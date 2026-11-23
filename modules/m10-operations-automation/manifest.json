@@ -10,50 +10,50 @@
     {
       "id": "scheduled-operations",
       "name": "Scheduled operations",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     },
     {
       "id": "event-driven-automation",
       "name": "Event-driven automation",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     },
     {
       "id": "incident-triggered-automation",
       "name": "Incident-triggered automation",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     },
     {
       "id": "resource-lifecycle-automation",
       "name": "Resource lifecycle automation",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     },
     {
       "id": "patch-management",
       "name": "Patch management",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; action implementations vary (RDS snapshot vs EKS upgrade)."
     },
     {
       "id": "backup-scheduling",
       "name": "Backup scheduling",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     },
     {
       "id": "database-maintenance",
       "name": "Database maintenance",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; action implementations vary (RDS snapshot vs EKS upgrade)."
     },
     {
       "id": "kubernetes-maintenance",
       "name": "Kubernetes maintenance",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; action implementations vary (RDS snapshot vs EKS upgrade)."
     },
     {
       "id": "certificate-renewal",
@@ -70,29 +70,29 @@
     {
       "id": "resource-cleanup",
       "name": "Resource cleanup",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     },
     {
       "id": "capacity-optimization",
       "name": "Capacity optimization",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; action implementations vary (RDS snapshot vs EKS upgrade)."
     },
     {
       "id": "recovery-workflows",
       "name": "Recovery workflows",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     },
     {
       "id": "configuration-remediation",
       "name": "Configuration remediation",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: job CRUD, scheduler, execution engine with approval gates. Demo mode simulates changes."
     }
   ],
-  "enabled": false,
+  "enabled": true,
   "design": {
     "automation_contract": [
       "owner",
@@ -106,5 +106,8 @@
       "verification",
       "audit evidence"
     ]
+  },
+  "ui": {
+    "workspace": "automation.html"
   }
 }

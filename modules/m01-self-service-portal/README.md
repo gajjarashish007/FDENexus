@@ -27,7 +27,7 @@ Python packages (installed by `run.sh` or `pip install -r requirements.txt`):
 ```bash
 cd modules/m01-self-service-portal
 ./run.sh
-# then open http://localhost:5001
+# then open http://localhost:8077/login.html (UI and API on one port)
 ```
 
 Or manually:
@@ -63,7 +63,7 @@ Approver-capable roles and admins see the **Approval Center**; admins also see t
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `M01_PORT` | `5001` | HTTP port |
+| `PORT` (or `M01_PORT`) | `8077` | The one HTTP port: web UI at /, API at /api |
 | `M01_HOST` | `0.0.0.0` | Bind address |
 | `M01_DEMO` | `1` | `1` simulates infrastructure actions; `0` expects real backends (not wired yet) |
 | `JWT_SECRET` | dev value | **Set this in any real deployment** |

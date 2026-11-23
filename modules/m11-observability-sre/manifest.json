@@ -10,14 +10,14 @@
     {
       "id": "centralized-metrics",
       "name": "Centralized metrics",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: services, incidents, alerts, SLOs, CloudWatch metrics/alarms. Live reads from AWS."
     },
     {
       "id": "logs",
       "name": "Logs",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; integration depth varies (CloudWatch logs vs distributed tracing)."
     },
     {
       "id": "distributed-tracing",
@@ -28,44 +28,44 @@
     {
       "id": "alert-management",
       "name": "Alert management",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: services, incidents, alerts, SLOs, CloudWatch metrics/alarms. Live reads from AWS."
     },
     {
       "id": "alert-correlation",
       "name": "Alert correlation",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; integration depth varies (CloudWatch logs vs distributed tracing)."
     },
     {
       "id": "incident-management",
       "name": "Incident management",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: services, incidents, alerts, SLOs, CloudWatch metrics/alarms. Live reads from AWS."
     },
     {
       "id": "root-cause-analysis",
       "name": "Root cause analysis",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; integration depth varies (CloudWatch logs vs distributed tracing)."
     },
     {
       "id": "slo-management",
       "name": "SLO management",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: services, incidents, alerts, SLOs, CloudWatch metrics/alarms. Live reads from AWS."
     },
     {
       "id": "error-budgets",
       "name": "Error budgets",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: services, incidents, alerts, SLOs, CloudWatch metrics/alarms. Live reads from AWS."
     },
     {
       "id": "service-health",
       "name": "Service health",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: services, incidents, alerts, SLOs, CloudWatch metrics/alarms. Live reads from AWS."
     },
     {
       "id": "dependency-mapping",
@@ -82,21 +82,24 @@
     {
       "id": "capacity-planning",
       "name": "Capacity planning",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; integration depth varies (CloudWatch logs vs distributed tracing)."
     },
     {
       "id": "reliability-analytics",
       "name": "Reliability analytics",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "Backend framework ready; integration depth varies (CloudWatch logs vs distributed tracing)."
     },
     {
       "id": "post-incident-reporting",
       "name": "Post-incident reporting",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Backend implemented: services, incidents, alerts, SLOs, CloudWatch metrics/alarms. Live reads from AWS."
     }
   ],
-  "enabled": false
+  "enabled": true,
+  "ui": {
+    "workspace": "observability.html"
+  }
 }

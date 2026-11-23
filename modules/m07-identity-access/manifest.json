@@ -10,109 +10,106 @@
     {
       "id": "sso",
       "name": "SSO",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "OIDC single sign-on (authorization code + PKCE, ID token signature checked against the IdP JWKS). Configure on the Identity page."
     },
     {
       "id": "mfa",
       "name": "MFA",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "TOTP (RFC 6238) enrolment, two-step login, admin reset, required per role (default admin)."
     },
     {
       "id": "saml-and-oidc",
       "name": "SAML and OIDC",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "partial",
+      "summary": "OIDC is live. SAML 2.0 is not supported; use an OIDC app in your IdP (Entra ID, Okta, Google, Keycloak all offer one)."
     },
     {
       "id": "scim-provisioning",
       "name": "SCIM provisioning",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "SCIM 2.0 /scim/v2/Users (list, filter, create, replace, patch, delete=disable) with a bearer token. Never modifies admins."
     },
     {
       "id": "rbac",
       "name": "RBAC",
-      "status": "partial",
-      "summary": "Six portal roles enforced by the backend; custom roles not built.",
+      "status": "live",
+      "summary": "Six portal roles enforced on every API call; temporary role elevation via JIT.",
       "provided_by": "M01"
     },
     {
       "id": "abac",
       "name": "ABAC",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Attribute rules: team must own the resource, production changes need an MFA or SSO session. Checked by M02 before changes."
     },
     {
       "id": "iam-role-management",
       "name": "IAM role management",
-      "status": "partial",
-      "summary": "Cross-account roles registered per AWS account; instance and node roles created by components.",
-      "provided_by": "M01/M02"
+      "status": "live",
+      "summary": "IAM roles from the account data cache with trust analysis (anyone, cross-account, missing external ID, unused 90+ days) and live policy view."
     },
     {
       "id": "just-in-time-access",
       "name": "Just-in-time access",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Request a higher role for 1-N hours with a reason; another approver or admin approves; no self-approval."
     },
     {
       "id": "privileged-access-management",
       "name": "Privileged access management",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Admin and operator access only through time-boxed JIT elevation, MFA enforcement, session marked elevated and audited."
     },
     {
       "id": "temporary-permissions",
       "name": "Temporary permissions",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "JIT grants end automatically at expiry; service tokens always expire (1-365 days)."
     },
     {
       "id": "access-expiration",
       "name": "Access expiration",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Per-user access end date; the account is disabled and its sessions revoked when it passes."
     },
     {
       "id": "access-reviews",
       "name": "Access reviews",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Review campaigns over all users: keep or revoke each, revocations applied on close."
     },
     {
       "id": "approval-workflows",
       "name": "Approval workflows",
       "status": "live",
-      "summary": "Requests and infrastructure changes need an approver; no self-approval.",
-      "provided_by": "M01/M03"
+      "summary": "Requests, infrastructure changes and JIT elevation need a different approver.",
+      "provided_by": "M01/M03/M07"
     },
     {
       "id": "automatic-revocation",
       "name": "Automatic revocation",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Background sweep every 60 s ends expired JIT grants, user access and service tokens; idle sessions sign out."
     },
     {
       "id": "service-identities",
       "name": "Service identities",
-      "status": "planned",
-      "summary": "Not built yet."
+      "status": "live",
+      "summary": "Named service tokens (fdx_...), stored hashed, roles viewer/developer/operator only, expire in 1-365 days, revocable, last-used tracked."
     },
     {
       "id": "workload-identity",
       "name": "Workload identity",
-      "status": "partial",
-      "summary": "EKS Pod Identity agent installed on every cluster.",
-      "provided_by": "M02"
+      "status": "live",
+      "summary": "Per EKS cluster: OIDC issuer, Pod Identity associations and IRSA roles, read live."
     },
     {
       "id": "session-auditing",
       "name": "Session auditing",
-      "status": "partial",
-      "summary": "Logins, failures and every change are in the audit log.",
-      "provided_by": "M01"
+      "status": "live",
+      "summary": "Every sign-in recorded with method, IP, client, last activity; users and admins can revoke sessions."
     }
   ],
   "enabled": true,
@@ -121,5 +118,8 @@
       "least privilege",
       "separation of duties"
     ]
+  },
+  "ui": {
+    "workspace": "identity.html"
   }
 }

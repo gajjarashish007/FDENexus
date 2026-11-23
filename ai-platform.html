@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI platform · FDE Nexus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/styles.css?v=202611232200" rel="stylesheet">
+</head>
+<body>
+<div class="nx-app" id="nx-app" data-page="ai-platform.html" data-title="AI platform">
+  <div class="nx-page-head">
+    <div><h1>AI engineering &amp; multi-agent platform</h1>
+      <p>Custom agents and teams on Claude, ChatGPT, Bedrock or any OpenAI-compatible model. Read-only tools, budgets and a full trace for every run.</p></div>
+    <div class="nx-head-actions" id="ai-actions"></div>
+  </div>
+  <div class="row g-3 mb-3" id="ai-kpis"></div>
+  <ul class="nav nav-tabs mb-3" id="ai-tabs">
+    <li class="nav-item"><button class="nav-link active" data-tab="agents">Agents</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="teams">Teams</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="runs">Run history</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="providers">Model providers</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="tools">Tools</button></li>
+  </ul>
+  <div id="ai-pane"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/mock-data.js?v=202611232200"></script>
+<script src="js/m01-api.js?v=202611232200"></script>
+<script src="js/components.js?v=202611232200"></script>
+<script src="js/app.js?v=202611232200"></script>
+<script src="js/nx-ui.js?v=202611232200"></script>
+<script src="js/ai-platform.js?v=202611232200"></script>
+</body>
+</html>
